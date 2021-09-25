@@ -9,6 +9,9 @@
     "tasks": "grunt --help",
     "build": "grunt"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/plugin-transform-runtime": "^7.13.15",
