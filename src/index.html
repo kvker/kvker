@@ -1,30 +1,31 @@
 <!DOCTYPE html>
-<head>
-  <meta charset="utf-8" />
-  <title>kvker个人站</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="description" content="kvker个人的聚合搜索网站, 搜罗多多的网站" />
-  <link rel="shortcut icon" href="favicon.ico" />
-  <link rel="stylesheet" href="css/custom.css" />
-  <link rel="stylesheet" href="css/index.css" />
-</head>
-<nav class="flex jcsb top-nav">
-  <div class="nav-side"></div>
-  <div class="flex jcc aic"><a class="nav-item" href="/">&#x9996;&#x9875;</a><a class="nav-item" href="/tool.html">&#x5DE5;&#x5177;</a></div>
-  <div class="nav-side" id="account">&#x8D26;&#x53F7;</div>
-</nav>
-<main>
-  <div>
-    <input id="search_input" placeholder="名称, 简述, 内容(没搜到则百度)" autofocus="" />
-    <button class="mr-10" id="search_btn">&#x641C;&#x7D22;</button>
-    <button class="mr-10" id="refresh_btn">&#x5237;&#x65B0;</button>
-    <button class="mr-10" id="add_btn" style="display: none">&#x65B0;&#x589E;</button>
-  </div>
-  <div class="flex flex-wrap jcsb" id="card_list"></div>
-</main>
-<footer style="position: fixed; bottom: 0; right: 0"><a style="color: #333" href="http://www.beian.miit.gov.cn" target="_blank">&#x6D59;ICP&#x5907;19013783&#x53F7;-1</a></footer>
-<script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
-<script src="js/av.js"></script>
-<script src="js/kk.js"></script>
-<script src="js/base.js"></script>
-<script src="js/index.js"></script>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>kvker个人站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="kvker个人的聚合搜索网站, 搜罗多多的网站" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="css/custom.css" />
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+  <body>
+    <main>
+      <div>
+        <input id="search_input" placeholder="名称, 简述, 内容(没搜到则百度)" autofocus="" />
+        <button class="mr-10" id="search_btn">搜索</button>
+        <button class="mr-10" id="refresh_btn">刷新</button>
+        <button class="mr-10" id="add_btn" style="display: none">新增</button>
+      </div>
+      <div class="flex flex-wrap jcsb" id="card_list"></div>
+    </main>
+    <footer style="position: fixed; bottom: 0; right: 0"><a style="color: #333" href="http://www.beian.miit.gov.cn" target="_blank">浙ICP备19013783号-1</a></footer>
+
+    <script src="/js/theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
+    <script src="/js/av.js"></script>
+    <script src="/js/kk.js"></script>
+    <script src="/js/base.js"></script>
+    <script src="/js/index.js"></script>
+  </body>
+</html>
