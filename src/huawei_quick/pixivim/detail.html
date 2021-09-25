@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="keywords" content="pixiv, P站, acg">
+  <meta name="description" content="在线分享P站美图工具">
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=3,minimum-scale=1">
+  <meta name="apple-mobile-web-app-title" content="pixivim">
+  <title>Detail - Pixivim</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="css/pixivim.css">
+  <style>
+    body {
+      padding: 10px;
+    }
+
+    .main-img {
+      width: 100%;
+      height: auto;
+    }
+
+    .icon-box svg {
+      width: 44px;
+      height: 44px;
+      padding: 10px;
+    }
+
+    .collection-icon.collected {
+      display: none;
+    }
+
+    .comment-box {
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <img class="main-img" src="#" alt="main-img" hidden onclick="clickMainImg()" crossOrigin="anonymous">
+  <p class="description"></p>
+  <div class="icon-box">
+    <!-- 未收藏 -->
+    <svg onclick="clickCollection(true)" t="1602944736874" class="collection-icon" viewBox="0 0 1024 1024" version="1.1"
+      xmlns="http://www.w3.org/2000/svg" p-id="1767" width="200" height="200">
+      <path
+        d="M707 121.9c-78.6 0-148.8 38.9-195.1 100-52.6-69.3-135.9-110-227-97.9C172.4 139 81.1 236.8 66.1 358.9c-10.8 87.6 16.3 168.3 66.2 226l11.5 12.5 207.4 225.5c88.7 96.5 232.6 96.5 321.3 0l207.4-225.5 11.5-12.5c42.5-49.2 68.5-115.2 68.5-188 0-151.9-113.3-275-252.9-275z"
+        p-id="1768" fill="#333333"></path>
+    </svg>
+    <!-- 已收藏 -->
+    <svg onclick="clickCollection(false)" t="1602944736874" class="collection-icon collected" viewBox="0 0 1024 1024"
+      version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1767" width="200" height="200">
+      <path
+        d="M707 121.9c-78.6 0-148.8 38.9-195.1 100-52.6-69.3-135.9-110-227-97.9C172.4 139 81.1 236.8 66.1 358.9c-10.8 87.6 16.3 168.3 66.2 226l11.5 12.5 207.4 225.5c88.7 96.5 232.6 96.5 321.3 0l207.4-225.5 11.5-12.5c42.5-49.2 68.5-115.2 68.5-188 0-151.9-113.3-275-252.9-275z"
+        p-id="1768" fill="#ff0000"></path>
+    </svg>
+    <!-- 评论 -->
+    <svg onclick="clickCommentIcon()" t="1602944839637" class="icon" viewBox="0 0 1024 1024" version="1.1"
+      xmlns="http://www.w3.org/2000/svg" p-id="2767" width="200" height="200">
+      <path
+        d="M512 928c-8.192 0-16.384-3.136-22.624-9.376l-96-96c-12.512-12.512-12.512-32.736 0-45.248s32.736-12.512 45.248 0L512 850.752l73.376-73.376C591.36 771.36 599.488 768 608 768l224 0c17.664 0 32-14.336 32-32L864 224c0-17.632-14.336-32-32-32L192 192C174.368 192 160 206.368 160 224l0 512c0 17.664 14.368 32 32 32l96 0c17.664 0 32 14.304 32 32s-14.336 32-32 32L192 832c-52.928 0-96-43.072-96-96L96 224c0-52.928 43.072-96 96-96l640 0c52.928 0 96 43.072 96 96l0 512c0 52.928-43.072 96-96 96l-210.752 0-86.624 86.624C528.384 924.864 520.192 928 512 928z"
+        p-id="2768" fill="#333333"></path>
+      <path d="M336 512C309.536 512 288 490.464 288 464S309.536 416 336 416s48 21.536 48 48S362.464 512 336 512z"
+        p-id="2769" fill="#333333"></path>
+      <path d="M528 512c-26.464 0-48-21.536-48-48s21.536-48 48-48 48 21.536 48 48S554.464 512 528 512z" p-id="2770"
+        fill="#333333"></path>
+      <path d="M720 512c-26.464 0-48-21.536-48-48s21.536-48 48-48 48 21.536 48 48S746.464 512 720 512z" p-id="2771"
+        fill="#333333"></path>
+    </svg>
+  </div>
+  <div class="comment-box"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
+  <script src="../js/av.js"></script>
+  <script src="js/pixivim.js"></script>
+  <script src="js/wc.js"></script>
+  <script>
+    let main_img = document.querySelector('.main-img')
+    let description = document.querySelector('.description')
+    let one_picture, collection
+
+    startLoading()
+    av.first('PixivimOnePicture', q => {
+      q.include(['img_file', 'author'])
+      q.equalTo('objectId', new URL(location.href).searchParams.get('id'))
+    }).then(ret => {
+      // console.log(ret)
+      one_picture = ret
+      main_img.src = ret.get('img_file').get('url')
+      main_img.hidden = false
+      description.innerText = ret.get('description')
+      // 获取评论
+      av.read('PixivimComment', q => {
+        q.include(['user'])
+        q.equalTo('one_picture', one_picture)
+        q.descending('createdAt')
+      }).then(ret => {
+        let fragment = document.createDocumentFragment()
+        ret.forEach((comment, idx) => {
+          let pv_comment = document.createElement('pv-comment')
+          pv_comment.data = {
+            author: comment.get('user').get('username'),
+            content: comment.get('content')
+          }
+          fragment.append(pv_comment)
+        })
+        document.querySelector('.comment-box').append(fragment)
+      }).catch(error => {
+        alert(error.message)
+      })
+      // 查看收藏
+      av.first('PixivimCollection', q => {
+        q.equalTo('one_picture', one_picture)
+        q.equalTo('user', av.currentUser())
+      }).then(ret => {
+        if(ret) {
+          collection = ret
+          changeCollectionStatus(true)
+        }
+      }).finally(_ => {
+        endLoading()
+      })
+    }).catch(error => {
+      alert(error.message)
+      endLoading()
+    })
+
+    function clickMainImg() {
+      if(confirm('确定要下载原图吗？')) {
+        let a = document.createElement('a')
+        a.download = 'a.png'
+        a.href = img2Base64(main_img)
+        a.click()
+      }
+    }
+
+    function clickCollection(is_to_collection) {
+      if(is_to_collection) {
+        if(collection) {
+          alert('已有收藏')
+        } else {
+          changeCollectionStatus(true)
+          av.create('PixivimCollection', {
+            user: av.currentUser(),
+            one_picture,
+          }).then(ret => {
+            collection = ret
+          }).catch(error => {
+            alert(error.message)
+            changeCollectionStatus(false)
+          })
+        }
+      } else {
+        if(collection) {
+          changeCollectionStatus(false)
+          av.delete('PixivimCollection', collection.id).then(ret => {
+            collection = null
+          }).catch(error => {
+            alert(error.message)
+            changeCollectionStatus(true)
+          })
+        } else {
+          alert('未找到记录')
+        }
+      }
+    }
+
+    function changeCollectionStatus(is_collected) {
+      if(is_collected) {
+        document.querySelector('.collection-icon').style.display = 'none'
+        document.querySelector('.collection-icon.collected').style.display = 'initial'
+      } else {
+        document.querySelector('.collection-icon').style.display = 'initial'
+        document.querySelector('.collection-icon.collected').style.display = 'none'
+      }
+    }
+
+    function clickCommentIcon() {
+      if(av.currentUser()) {
+        let content = prompt('请输入要评论的内容')
+        if(content.trim()) {
+          startLoading()
+          av.create('PixivimComment', {
+            user: av.currentUser(),
+            one_picture,
+            content,
+          }).then(ret => {
+            let pv_comment = document.createElement('pv-comment')
+            pv_comment.data = {
+              author: av.currentUser().get('username'),
+              content
+            }
+            document.querySelector('.comment-box').insertAdjacentElement('afterbegin', pv_comment)
+          }).catch(errpr => {
+            alert(error.message)
+          }).finally(_ => {
+            endLoading()
+          })
+        }
+      } else {
+        location.href = "login.html"
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fetch简介</title>
+</head>
+
+<body>
+  <div id="pro-mian" class="main-container font0">
+    <div class="project-body">
+
+      <div id="pro-mian-header">
+        <div class="content-top">
+          <h1>Fetch简介</h1>
+        </div>
+        <!--                 <div class="kn-infomation">
+    由&nbsp;<span>Carrie</span>&nbsp;创建， 最后一次修改&nbsp;<span>2018-01-22</span>
+    </div>  -->
+      </div>
+      <div class="content-bg">
+        <div class="content-intro view-box ">
+          <p>Fetch API提供了一个 JavaScript 接口用于访问和操作HTTP管道的零件，如请求和响应。它还提供了一种全局fetch()方法，可以提供一种简单，合理的方式在网络上异步获取资源。<br></p>
+          <p>此类功能以前是使用 XMLHttpRequest 实现的。Fetch提供了一个更好的替代方法，可以很容易地被其他技术使用，如Service
+            Workers。Fetch还提供了一个单一的逻辑位置来定义其他HTTP相关的概念，如CORS和HTTP的扩展。</p>
+          <p>请注意，Fetch规格不同于jQuery.ajax()，主要体现在两个方面：</p>
+          <ul>
+            <li>即使响应是HTTP 404或500，从&nbsp;fetch()
+              返回的Promise也不会拒绝HTTP错误状态。相反，它将正常解析（ok状态设置为false），并且它只会在网络故障时拒绝，或者如果任何东西阻止了请求的完成</li>
+            <li>
+              默认情况下，&nbsp;如果站点依靠维护用户会话（发送cookie，必须设置credentials&nbsp;init选项），则fetch不会发送或接收来自服务器的任何cookie，从而导致未经身份验证的请求。
+            </li>
+          </ul>
+          <h2><span style="font-family: inherit;">Fetch</span>请求</h2>
+          <p>基本的Fetch请求非常容易设置。看看下面的代码：<br></p>
+          <pre lang="javascript" style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-keyword">var</span> myImage = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'img'</span>);
+
+    fetch(<span class="hljs-string">'flowers.jpg'</span>).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>) </span>{
+      <span class="hljs-keyword">return</span> response.blob();
+    }).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">myBlob</span>) </span>{
+      <span class="hljs-keyword">var</span> objectURL = URL.createObjectURL(myBlob);
+      myImage.src = objectURL;
+    });</code></pre>
+          <p>在这里，我们通过网络获取图像并将其插入到一个&lt;img&gt;元素中。最简单的用法是fetch()带一个参数 - 要获取的资源的路径 - 并返回一个包含响应（Response对象）的promise。</p>
+          <p>这当然只是一个HTTP响应，而不是实际的图像。为了从响应中提取图像主体内容，我们使用blob()方法（在Body mixin混合中定义，由Request对象和Response对象实现）。</p>
+          <p>注意：Body mixin也有类似的方法来提取其他类型的Body内容；请参阅正文部分了解更多信息。<br></p>
+          <p>一个objectURL接着从所提取的Blob创建，然后将其插入img。</p>
+          <p>获取请求由内容安全策略connect-src指令控制，而不是由它检索的资源指令控制。</p>
+          <h3>提供请求选项</h3>
+          <p>该fetch()方法可以选择性地接受第二个参数，一个&nbsp;init&nbsp;对象，允许你控制许多不同的设置：<br></p>
+          <p>有关可用选项的详细说明，请参阅fetch()。</p>
+          <pre lang="javascript" style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-keyword">var</span> myHeaders = <span class="hljs-keyword">new</span> Headers();
+
+    <span class="hljs-keyword">var</span> myInit = { method: <span class="hljs-string">'GET'</span>,
+                   headers: myHeaders,
+                   mode: <span class="hljs-string">'cors'</span>,
+                   cache: <span class="hljs-string">'default'</span> };
+
+    fetch(<span class="hljs-string">'flowers.jpg'</span>, myInit).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>) </span>{
+      <span class="hljs-keyword">return</span> response.blob();
+    }).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">myBlob</span>) </span>{
+      <span class="hljs-keyword">var</span> objectURL = URL.createObjectURL(myBlob);
+      myImage.src = objectURL;
+    });</code></pre>
+          <h3>发送包含凭据的请求</h3>
+          <p>要使浏览器发送包含凭据的请求，即使是跨源调用，请向传递给fetch()方法的init对象添加credentials: 'include'：<br></p>
+          <pre lang="javascript" style="max-width: 100%;"><code class="javascript hljs">fetch(<span class="hljs-string">'https://example.com'</span>, {
+      credentials: <span class="hljs-string">'include'</span>
+    })</code></pre>
+          <p>如果您只想在请求URL与调用脚本位于相同的源时发送凭据，请添加&nbsp;&nbsp;credentials: 'same-origin'。</p>
+          <pre lang="javascript" style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-comment">// The calling script is on the origin 'https://example.com'</span>
+
+    fetch(<span class="hljs-string">'https://example.com'</span>, {
+      credentials: <span class="hljs-string">'same-origin'</span>
+    })</code></pre>
+          <p>要改为确保浏览器不在请求中包含凭据，请使用credentials: 'omit'。</p>
+          <pre lang="javascript" style="max-width: 100%;"><code class="javascript hljs">fetch(<span class="hljs-string">'https://example.com'</span>, {
+      credentials: <span class="hljs-string">'omit'</span>
+    })</code></pre>
+          <h3>上传JSON数据</h3>
+          <p>使用fetch()开机自检JSON编码的数据。</p>
+          <pre lang="javascript"
+            style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-keyword">var</span> url = <span class="hljs-string">'https://example.com/profile'</span>;
+    <span class="hljs-keyword">var</span> data = {username: <span class="hljs-string">'example'</span>};
+
+    fetch(url, {
+      method: <span class="hljs-string">'POST'</span>, <span class="hljs-comment">// or 'PUT'</span>
+      body: <span class="hljs-built_in">JSON</span>.stringify(data),
+      headers: <span class="hljs-keyword">new</span> Headers({
+        <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json'</span>
+      })
+    }).then(res =&gt; res.json())
+    .catch(error =&gt; <span class="hljs-built_in">console</span>.error(<span class="hljs-string">'Error:'</span>, error))
+    .then(response =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Success:'</span>, response));</code></pre>
+          <h3>上传文件</h3>
+          <p>可以使用 HTML &lt;input type="file"/&gt; input 元素、FormData () 和fetch()来上载文件。</p>
+          <pre lang="javascript"
+            style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-keyword">var</span> formData = <span class="hljs-keyword">new</span> FormData();
+    <span class="hljs-keyword">var</span> fileField = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">"input[type='file']"</span>);
+
+    formData.append(<span class="hljs-string">'username'</span>, <span class="hljs-string">'abc123'</span>);
+    formData.append(<span class="hljs-string">'avatar'</span>, fileField.files[<span class="hljs-number">0</span>]);
+
+    fetch(<span class="hljs-string">'https://example.com/profile/avatar'</span>, {
+      method: <span class="hljs-string">'PUT'</span>,
+      body: formData
+    })
+    .then(response =&gt; response.json())
+    .catch(error =&gt; <span class="hljs-built_in">console</span>.error(<span class="hljs-string">'Error:'</span>, error))
+    .then(response =&gt; <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Success:'</span>, response));</code></pre>
+          <h3>检查fetch是否成功</h3>
+          <p>当遇到网络错误或服务器端的 CORS 配置不正确时，一个fetch()承诺将拒绝TypeError，尽管这通常意味着权限问题或类似的情况 -
+            例如，404不构成一个网络错误。一个成功的fetch()的准确检查将包括检查承诺解决，然后检查该Response.ok属性的值为true。代码看起来像这样：</p>
+          <pre lang="javascript" style="max-width: 100%;"><code class="javascript hljs">fetch(<span class="hljs-string">'flowers.jpg'</span>).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>) </span>{
+      <span class="hljs-keyword">if</span>(response.ok) {
+        <span class="hljs-keyword">return</span> response.blob();
+      }
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Network response was not ok.'</span>);
+    }).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">myBlob</span>) </span>{
+      <span class="hljs-keyword">var</span> objectURL = URL.createObjectURL(myBlob);
+      myImage.src = objectURL;
+    }).catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) </span>{
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'There has been a problem with your fetch operation: '</span>, error.message);
+    });</code></pre>
+          <h3>提供您自己的请求对象</h3>
+          <p>您可以使用Request()构造函数创建请求对象，并将其作为fetch()方法参数传入，而不是将要请求的资源的路径传递到&nbsp;fetch&nbsp;()&nbsp;调用中。</p>
+          <pre lang="javascript" style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-keyword">var</span> myHeaders = <span class="hljs-keyword">new</span> Headers();
+
+    <span class="hljs-keyword">var</span> myInit = { method: <span class="hljs-string">'GET'</span>,
+                   headers: myHeaders,
+                   mode: <span class="hljs-string">'cors'</span>,
+                   cache: <span class="hljs-string">'default'</span> };
+
+    <span class="hljs-keyword">var</span> myRequest = <span class="hljs-keyword">new</span> Request(<span class="hljs-string">'flowers.jpg'</span>, myInit);
+
+    fetch(myRequest).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>) </span>{
+      <span class="hljs-keyword">return</span> response.blob();
+    }).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">myBlob</span>) </span>{
+      <span class="hljs-keyword">var</span> objectURL = URL.createObjectURL(myBlob);
+      myImage.src = objectURL;
+    });</code></pre>
+          <p>Request()接受与该fetch()方法完全相同的参数。您甚至可以传入现有的请求对象来创建它的副本：</p>
+          <pre lang="javascript"
+            style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-keyword">var</span> anotherRequest = <span class="hljs-keyword">new</span> Request(myRequest, myInit);</code></pre>
+          <p>这非常有用，因为请求和响应主体只是一个用途。制作这样的副本可以让您再次使用请求/响应，同时根据需要改变init选项。复制必须在阅读正文之前完成，并且阅读正文中的正文也将其标记为原始请求中的正文。<br></p>
+          <p>注意：还有一种clone()方法可以创建副本。如果原始请求或响应的主体已经被读取，则创建副本的两种方法都将失败，但是读取克隆的响应或请求的主体不会导致它在原始中被标记为已读。</p>
+          <h2>Headers</h2>
+          <p>该Headers接口允许您通过Headers()构造函数创建自己的headers对象。headers对象是名称到值的简单多重映射：</p>
+          <pre lang="javascript"
+            style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-keyword">var</span> content = <span class="hljs-string">"Hello World"</span>;
+    <span class="hljs-keyword">var</span> myHeaders = <span class="hljs-keyword">new</span> Headers();
+    myHeaders.append(<span class="hljs-string">"Content-Type"</span>, <span class="hljs-string">"text/plain"</span>);
+    myHeaders.append(<span class="hljs-string">"Content-Length"</span>, content.length.toString());
+    myHeaders.append(<span class="hljs-string">"X-Custom-Header"</span>, <span class="hljs-string">"ProcessThisImmediately"</span>);</code></pre>
+          <p>同样可以通过传递一个数组或一个对象字面值给构造函数来实现：</p>
+          <pre lang="javascript" style="max-width: 100%;"><code class="javascript hljs">myHeaders = <span class="hljs-keyword">new</span> Headers({
+      <span class="hljs-string">"Content-Type"</span>: <span class="hljs-string">"text/plain"</span>,
+      <span class="hljs-string">"Content-Length"</span>: content.length.toString(),
+      <span class="hljs-string">"X-Custom-Header"</span>: <span class="hljs-string">"ProcessThisImmediately"</span>,
+    });</code></pre>
+          <p>内容可以被查询和检索：</p>
+          <pre lang="javascript"
+            style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-built_in">console</span>.log(myHeaders.has(<span class="hljs-string">"Content-Type"</span>)); <span class="hljs-comment">// true</span>
+    <span class="hljs-built_in">console</span>.log(myHeaders.has(<span class="hljs-string">"Set-Cookie"</span>)); <span class="hljs-comment">// false</span>
+    myHeaders.set(<span class="hljs-string">"Content-Type"</span>, <span class="hljs-string">"text/html"</span>);
+    myHeaders.append(<span class="hljs-string">"X-Custom-Header"</span>, <span class="hljs-string">"AnotherValue"</span>);
+
+    <span class="hljs-built_in">console</span>.log(myHeaders.get(<span class="hljs-string">"Content-Length"</span>)); <span class="hljs-comment">// 11</span>
+    <span class="hljs-built_in">console</span>.log(myHeaders.get(<span class="hljs-string">"X-Custom-Header"</span>)); <span class="hljs-comment">// ["ProcessThisImmediately", "AnotherValue"]</span>
+
+    myHeaders.delete(<span class="hljs-string">"X-Custom-Header"</span>);
+    <span class="hljs-built_in">console</span>.log(myHeaders.get(<span class="hljs-string">"X-Custom-Header"</span>)); <span class="hljs-comment">// [ ]</span></code></pre>
+          <p>其中的一些操作只是在 ServiceWorkers 中很有用，但是它们提供了一个更好的API来处理headers。<br></p>
+          <p>如果使用的headers名不是有效的HTTP
+            Header名称称，则所有的Headers方法都会抛出一个TypeError。如果有一个不变的guar，变异操作将会抛出一个TypeError（见下文）。否则，他们默默地失败。例如：</p>
+          <pre lang="javascript" style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-keyword">var</span> myResponse = Response.error();
+    <span class="hljs-keyword">try</span> {
+      myResponse.headers.set(<span class="hljs-string">"Origin"</span>, <span class="hljs-string">"http://mybank.com"</span>);
+    } <span class="hljs-keyword">catch</span>(e) {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Cannot pretend to be a bank!"</span>);
+    }</code></pre>
+          <p>headers的一个很好的用例是在进一步处理之前检查内容类型是否正确。例如：</p>
+          <pre lang="javascript"
+            style="max-width: 100%;"><code class="javascript hljs">fetch(myRequest).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>) </span>{
+        <span class="hljs-keyword">var</span> contentType = response.headers.get(<span class="hljs-string">"content-type"</span>);
+        <span class="hljs-keyword">if</span>(contentType &amp;&amp; contentType.includes(<span class="hljs-string">"application/json"</span>)) {
+          <span class="hljs-keyword">return</span> response.json();
+        }
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Oops, we haven't got JSON!"</span>);
+      })
+      .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">json</span>) </span>{ <span class="hljs-comment">/* process your JSON further */</span> })
+      .catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error</span>) </span>{ <span class="hljs-built_in">console</span>.log(error); });</code></pre>
+          <h3>Guard</h3>
+          <p>由于headers可以在请求中发送，并在响应中收到，并且对于哪些信息可以并且应该是可变的有各种限制，headers对象具有guard属性。这不会暴露给Web，但会影响headers对象上允许使用的变异操作。<br>
+          </p>
+          <p>可能的guard值是：</p>
+          <ul>
+            <li>none：默认。</li>
+            <li>request：从请求（Request.headers）中获得的headers对象的guard。</li>
+            <li>request-no-cors：从使用创建的请求获取headers对象的guard。Request.mode&nbsp;no-cors</li>
+            <li>response：从响应（Response.headers）获得的headers的guard。</li>
+            <li>immutable：主要用于ServiceWorkers；呈现只读headers对象。</li>
+          </ul>
+          <p>注意：您不能追加或设置request保护的Headers的 Content-Length
+            headers。同样，Set-Cookie不允许插入响应头：ServiceWorkers不允许通过合成响应来设置cookie。</p>
+          <h2><span style="font-family: inherit;">Response</span>对象</h2>
+          <p>正如你上面看到的，当fetch() promise被解析时，Response实例被返回。<br></p>
+          <p>您将使用的最常见的响应属性是：</p>
+          <ul>
+            <li>Response.status&nbsp;- 包含响应状态码的整数（默认值200）。</li>
+            <li>Response.statusText&nbsp;- 一个字符串（默认值“OK”），对应于HTTP状态码消息。</li>
+            <li>Response.ok&nbsp;- 在使用上面看，这是一个用于检查状态是否在200-299范围内的简写。这返回一个Boolean。</li>
+          </ul>
+          <p>它们也可以通过JavaScript以编程方式创建，但在ServiceWorkers中，当您使用respondWith()方法提供对接收到的请求的自定义响应时，这只会非常有用：</p>
+          <pre lang="javascript" style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-keyword">var</span> myBody = <span class="hljs-keyword">new</span> Blob();
+
+    addEventListener(<span class="hljs-string">'fetch'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) </span>{ <span class="hljs-comment">// ServiceWorker intercepting a fetch</span>
+      event.respondWith(
+        <span class="hljs-keyword">new</span> Response(myBody, {
+          headers: { <span class="hljs-string">"Content-Type"</span> : <span class="hljs-string">"text/plain"</span> }
+        })
+      );
+    });</code></pre>
+          <p>所述Response()构造函数有两个可选的参数- 一个用于响应的主体，和一个初始化对象（类似于接受的Request()）</p>
+          <ul></ul>
+          <p>注意：静态方法error()只是返回错误响应。同样，redirect()返回一个响应导致重定向到指定的URL。这些也只与Service Workers有关。</p>
+          <h2>Body</h2>
+          <p>请求和响应都可能包含body数据。一个body是以下任何一种类型的实例：</p>
+          <ul>
+            <li>ArrayBuffer</li>
+            <li>ArrayBufferView&nbsp;（Uint8Array和扩展）</li>
+            <li>Blob/File</li>
+            <li>string</li>
+            <li>URLSearchParams</li>
+            <li>FormData</li>
+          </ul>
+          <p>Body mixin定义了以下方法来提取体（由得到的Request和Response实施）。这些都会返回一个最终解决实际内容的承诺。</p>
+          <ul>
+            <li>arrayBuffer()</li>
+            <li>blob()</li>
+            <li>json()</li>
+            <li>text()</li>
+            <li>formData()</li>
+          </ul>
+          <p>这使得使用非文本数据比使用XHR更容易。</p>
+          <p>请求体可以通过传递身体参数来设置：</p>
+          <pre lang="javascript" style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-keyword">var</span> form = <span class="hljs-keyword">new</span> FormData(<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'login-form'</span>));
+    fetch(<span class="hljs-string">"/login"</span>, {
+      method: <span class="hljs-string">"POST"</span>,
+      body: form
+    });</code></pre>
+          <p>请求和响应（以及扩展fetch()功能）都将尝试智能地确定内容类型。请求会自动设置Content-Type header，如果字典中没有设置。</p>
+          <h2><span style="font-family: inherit;">Feature</span>检测</h2>
+          <p>通过检查Window或Worker范围中的Headers，Request，Response或fetch()是否存在，可以检测到Fetch API支持。例如：</p>
+          <pre lang="javascript" style="max-width: 100%;"><code class="javascript hljs"><span class="hljs-keyword">if</span> (self.fetch) {
+        <span class="hljs-comment">// run my fetch request here</span>
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// do something with XMLHttpRequest?</span>
+    }</code></pre>
+          <h2>Polyfill</h2>
+          <p>要在不受支持的浏览器中使用Fetch，可以使用Fetch Polyfill，为不支持的浏览器重新创建功能。</p>
+          <h2>规范</h2>
+          <table class="">
+            <tbody>
+              <tr>
+                <th style="text-align: center;">规范</th>
+                <th style="text-align: center;">状态</th>
+                <th style="text-align: center;">评论</th>
+              </tr>
+              <tr>
+                <td style="text-align: center;">Fetch<br></td>
+                <td style="text-align: center;">Living Standard<br></td>
+                <td style="text-align: center;">Initial definition<br></td>
+              </tr>
+            </tbody>
+          </table>
+          <h2>浏览器兼容性</h2>
+          <ul>
+            <li>电脑端</li>
+          </ul>
+          <table class="">
+            <tbody>
+              <tr>
+                <th style="text-align: center;">Feature<br></th>
+                <th style="text-align: center;">Chrome<br></th>
+                <th style="text-align: center;">Edge<br></th>
+                <th style="text-align: center;">Firefox（Gecko）</th>
+                <th style="text-align: center;">Internet Explorer<br></th>
+                <th style="text-align: center;">Opera<br></th>
+                <th style="text-align: center;">Safari（WebKit）</th>
+              </tr>
+              <tr>
+                <td style="text-align: center;">基本的支持</td>
+                <td style="text-align: center;">支持：42</td>
+                <td style="text-align: center;">支持：14</td>
+                <td>
+                  <div style="text-align: center;"><span style="background-color: transparent;">支持：</span></div>
+                  <div style="text-align: center;"><span style="background-color: transparent;">39（39）</span></div>
+                  <div style="text-align: center;"><span style="background-color: transparent;">34（34）</span><sup
+                      style="background-color: transparent;">[1]&nbsp;</sup></div>
+                  <div style="text-align: center;"><span style="background-color: transparent;">52（52）</span><sup
+                      style="background-color: transparent;">[2]</sup></div>
+                </td>
+                <td style="text-align: center;">不支持</td>
+                <td style="text-align: center;">支持：29、28&nbsp;<sup>[1]</sup></td>
+                <td style="text-align: center;">支持：10.1</td>
+              </tr>
+            </tbody>
+          </table>
+          <ul>
+            <li>移动端</li>
+          </ul>
+          <table class="">
+            <tbody>
+              <tr>
+                <th style="text-align: center;">Feature</th>
+                <th style="text-align: center;">Android Webview</th>
+                <th style="text-align: center;">Chrome for Android</th>
+                <th style="text-align: center;">Firefox Mobile (Gecko)</th>
+                <th style="text-align: center;">IE Phone</th>
+                <th style="text-align: center;">Opera Mobile</th>
+                <th style="text-align: center;">Safari Mobile</th>
+              </tr>
+              <tr>
+                <td style="text-align: center;">基本的支持<br></td>
+                <td style="text-align: center;">支持：42</td>
+                <td style="text-align: center;">支持：42</td>
+                <td style="text-align: center;">支持</td>
+                <td style="text-align: center;">不支持</td>
+                <td style="text-align: center;">?</td>
+                <td style="text-align: center;">支持：10.1</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>对应的角标解释：</p>
+          <p>[1]这个API是在首选项后面实现的。</p>
+          <p>[2]在Firefox 52之前，get()只返回指定头文件中的第一个值，getAll()返回所有的值。从52开始，get()现在返回所有值getAll()并被删除。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

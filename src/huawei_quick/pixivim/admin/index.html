@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <title>日推</title>
+</head>
+
+<body>
+  <pt-nav></pt-nav>
+  <h2>微信日推(默认去首)</h2>
+  <input id="date_input" type="text" placeholder="输入日期">
+  <br>
+  <label>
+    去首
+    <input id="filter_first" type="checkbox" checked>
+  </label>
+  <label>
+    去尾
+    <input id="filter_last" type="checkbox">
+  </label>
+  <br>
+  <br>
+  <input id="url_input" type="text" placeholder="完整微信完整链接">
+  <br>
+  <br>
+  <button onclick="app.submitUrl()">提交</button>
+  <button onclick="app.pushMP()">小程序推送</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.5.3/dist/av-min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.8.26/dayjs.min.js"></script>
+  <script src="av.js"></script>
+  <script src="wc.js"></script>
+  <script src="/js/kk.js"></script>
+  <script src="/js/base.js"></script>
+</body>
+<script>
+  const app = new class App extends Base {
+    constructor() {
+      super()
+      document.addEventListener('visibilitychange', function(e) {
+        if(document.visibilityState === 'visible') {
+          document.querySelector('#url_input').value = ''
+          document.querySelector('#url_input').focus()
+        }
+      })
+      document.querySelector('#date_input').value = dayjs().format('YYYY/MM/DD')
+    }
+
+    /**
+     * 解析公众号每日推送
+     */
+    submitUrl() {
+      let data = {
+        url: document.querySelector('#url_input').value,
+      }
+      let date = document.querySelector('#date_input').value
+      if(!date.trim()) {
+        alert('日期没写')
+        return
+      }
+      if(!data.url.trim()) {
+        alert('链接, 傻逼')
+        return
+      }
+      // 是否去尾
+      if(document.querySelector('#filter_first').checked) {
+        data.filter_first = true
+      }
+      // 是否去尾
+      if(document.querySelector('#filter_last').checked) {
+        data.filter_last = true
+      }
+
+      this.post(this.url.cf, data).then(async ret => {
+        // console.log(ret)
+        let list = ret.list
+        av.create('Day', {
+          date: new Date(date),
+          cover_img: list[list.length - 1],
+          imgs: list,
+          status: 0,
+        }).then(ret => {
+          console.log(ret)
+          alert('ok')
+        })
+      })
+    }
+
+    pushMP() {
+      this.post(this.url.cf, {
+        push_mp: true
+      }).then(async ret => {
+        alert('小程序推送成功')
+      })
+    }
+  }
+</script>
+
+</html>

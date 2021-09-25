@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <title>专题</title>
+</head>
+
+<body>
+  <pt-nav></pt-nav>
+  <h2>微信专题</h2>
+  <input id="topic_input" type="text" placeholder="专题名">
+  <br>
+  <label>
+    去首
+    <input id="filter_first" type="checkbox" checked>
+  </label>
+  <label>
+    去尾
+    <input id="filter_last" type="checkbox">
+  </label>
+  <br>
+  <br>
+  <input id="topic_url_input" type="text" placeholder="完整微信完整链接">
+  <br>
+  <br>
+  <button onclick="app.submitUrlForTopic()">提交</button>
+  <progress id="progress_topic" value="0" max="100"></progress>
+
+  <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.5.3/dist/av-min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.8.26/dayjs.min.js"></script>
+  <script src="/js/kk.js"></script>
+  <script src="/js/base.js"></script>
+  <script src="av.js"></script>
+  <script src="wc.js"></script>
+</body>
+<script>
+  const app = new class App extends Base {
+    constructor() {
+      super()
+      document.addEventListener('visibilitychange', function(e) {
+        if(document.visibilityState === 'visible') {
+          document.querySelector('#topic_url_input').value = ''
+          document.querySelector('#topic_url_input').focus()
+        }
+      })
+    }
+
+    /**
+   * 解析公众号主题
+   */
+    async submitUrlForTopic() {
+      let topic
+      let data = {
+        url: document.querySelector('#topic_url_input').value,
+      }
+      let topic_name = document.querySelector('#topic_input').value
+      if(!topic_name.trim()) {
+        alert('专题名, 傻逼')
+        return
+      }
+
+      let ret = await av.read('Topic', q => {
+        q.equalTo('name', topic_name)
+      })
+
+      if(ret.length) {
+        topic = ret[0]
+      } else {
+        topic = await av.create('Topic', {
+          name: topic_name
+        })
+      }
+
+      // 是否去尾
+      if(document.querySelector('#filter_first').checked) {
+        data.filter_first = true
+      }
+      // 是否去尾
+      if(document.querySelector('#filter_last').checked) {
+        data.filter_last = true
+      }
+
+      let progress = document.querySelector('#progress_topic')
+      let idx = 0
+      this.post(this.url.cf, data).then(async ret => {
+        // console.log(ret)
+        let urls = ret.list
+        progress.max = urls.length
+        for(const url of urls) {
+          let ret = await av.uploadWithUrl(url)
+          await av.create('TopicFileMap', {
+            topic,
+            file_url: ret.get('url')
+          })
+          progress.value = ++idx
+          // todo 添加封面图
+          if(idx === 1) {
+            await topic.set({
+              cover_img: ret.get('url')
+            }).save()
+          }
+        }
+        let num = topic_name.match(/\d*$/)[0]
+        let num_length = num.length
+        if(num.length) {
+          num = +num
+          num++
+          document.querySelector('#topic_input').value = topic_name.replace(/\d*$/, num)
+        }
+      })
+    }
+  }
+</script>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的时间管理局</title>
+  <meta name="description" content="timer">
+  <meta name="keywords" content="timer">
+  <meta name="apple-mobile-web-app-title" content="我的时间管理局">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic">
+  <style>
+    body {
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <button onclick="javascript: location.replace('/huawei_quick/timer/')">返回</button>
+  <main></main>
+
+  <script src="js/util.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.9.6/dayjs.min.js"></script>
+  <script>
+    let history = JSON.parse(localStorage.getItem('timer_history'))
+    if(!history || !history.length) {
+      document.querySelector('main').innerText = '暂无记录'
+    } else {
+      document.querySelector('main').innerHTML = history.reduce((p, c, idx) => p += `
+<pre id="history${idx}" onclick="clickHistory(${idx}, event)">${dayjs.unix(c.start_time).format('YYYY/MM/DD HH:mm:ss')}
+|
+${dayjs.unix(c.end_time).format('YYYY/MM/DD HH:mm:ss')}
+共计: ${formatTime(c.total_time)}
+
+</pre>`, '')
+    }
+
+    function clickHistory(idx, e) {
+      if(confirm('删除可不恢复, 请确认?')) {
+        document.querySelector(`#history${idx}`).remove()
+        history.splice(idx, 1)
+        localStorage.setItem('timer_history', JSON.stringify(history))
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的时间管理局</title>
+  <meta name="description" content="timer">
+  <meta name="keywords" content="timer">
+  <meta name="apple-mobile-web-app-title" content="我的时间管理局">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic">
+  <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+  <h1>00:00:00</h1>
+
+  <section class="ctrls">
+    <button style="background-color: red;color: white;" onclick="clickReset()">重置</button>
+    <button onclick="javascript: location.reload()">重来</button>
+    <button onclick="clickStart()">开始</button>
+    <button id="status_button" onclick="clickStatusButton()">暂停</button>
+    <button onclick="clickEnd()">结束</button>
+  </section>
+
+  <section class="content">
+    <div class="left-content">
+      <p class="total day">
+        日统计: <span></span>
+      </p>
+      <p class="total week">
+        周统计: <span></span>
+      </p>
+      <p class="total month">
+        月统计: <span></span>
+      </p>
+      <p class="total year">
+        年统计: <span></span>
+      </p>
+      <p class="total full">
+        总统计: <span></span>
+      </p>
+    </div>
+    <div class="right-ctrls">
+      <label for="for_up">
+        <input type="radio" name="show_type" id="for_up" value="1" onclick="clickRadio(event)">
+        <span class="checkable">不满小时算小时</span>
+      </label>
+      <label for="for_exact">
+        <input type="radio" name="show_type" id="for_exact" checked value="0" onclick="clickRadio(event)">
+        <span class="checkable">精准统计到秒</span>
+      </label>
+      <label for="for_down">
+        <input type="radio" name="show_type" id="for_down" value="2" onclick="clickRadio(event)">
+        <span class="checkable">不满小时不算小时</span>
+      </label>
+      <a href="history.html">历史明细</a>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.9.6/dayjs.min.js"></script>
+  <script src="js/util.js"></script>
+  <script src="js/index.js"></script>
+</body>
+
+</html>

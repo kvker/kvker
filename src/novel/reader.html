@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+
+<head>
+  <title>章节</title>
+  <meta name="description" content="具体章节">
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-title" content="章节">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    @media (prefers-color-scheme: dark) {
+      html, .container {
+        background: #333;
+        color: white;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container" style="padding-top: 15px;">
+    <div class="d-flex justify-content-between" style="margin-bottom: 15px;">
+      <a href="/">返回首页</a>
+      <a href="javascript: location.replace('/detail.html?' + location.search)">返回列表</a>
+    </div>
+    <button class="btn btn-primary btn-block" type="button" onclick="clickPrevious()">
+      上一章
+    </button>
+    <h1 id="title" style="margin: 15px 0;"></h1>
+    <p id="content">加载中...</p>
+    <button class="btn btn-primary btn-block" style="margin: 15px 0;" type="button" onclick="clickNext()">
+      下一章
+    </button>
+  </div>
+
+  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.6.1/dist/av-min.js"></script>
+  <script src="global_config.js"></script>
+  <script>
+    let content = document.querySelector('#content')
+    let title_id = location.$query.title_id
+    let book_id = location.$query.book_id
+    let book_info = JSON.parse(localStorage.getItem(book_id))
+    let current_idx = 0
+    book_info.title_list.forEach((i, idx) => {
+      if(i.objectId === title_id) {
+        current_idx = idx
+        book_info.current = i
+        localStorage.setItem(book_id, JSON.stringify(book_info))
+      }
+    })
+    let query = new AV.Query('Wxw')
+    query.equalTo('objectId', title_id)
+    query.first().then(ret => {
+      // console.log(ret)
+      if(ret.get('content')) {
+        content.innerText = ret.get('content')
+      } else {
+        // 后面文章都是txt文件
+        fetch(ret.get('file').get('url')).then(file_ret => {
+          file_ret.text().then(text => {
+            content.innerText = decodeURI(text)
+          })
+        })
+      }
+      title.innerText = ret.get('title')
+    })
+
+    function clickPrevious() {
+      if(!current_idx) {
+        alert('已经是第一章')
+        return
+      }
+      location.href = `reader.html?title_id=${book_info.title_list[current_idx - 1].objectId}&book_id=${book_id}`
+    }
+
+    function clickNext() {
+      if(current_idx === book_info.title_list.length - 1) {
+        alert('已经是最后一章')
+        return
+      }
+      location.href = `reader.html?title_id=${book_info.title_list[current_idx + 1].objectId}&book_id=${book_id}`
+    }
+  </script>
+</body>
+
+</html>

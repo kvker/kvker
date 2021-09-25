@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <title>脚本</title>
+</head>
+
+<body>
+  <pt-nav></pt-nav>
+  <h2>脚本</h2>
+
+  <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.5.3/dist/av-min.js"></script>
+  <script src="av.js"></script>
+</body>
+
+<script>
+  // deleteLowArtist(11)
+  // deleteLowTopic(11)
+  // deleteEmptyCollection()
+
+  function deleteLowArtist(view_count) {
+    av.read('Artist', q => {
+      q.lessThan('view_count', view_count)
+      q.contains('cover_img', 'pixivtopfile')
+      q.limit(1000)
+    }).then(async ret => {
+      // console.log(ret)
+      let idx = 0
+      for(const artist of ret) {
+        let afm_list = await av.read('ArtistFileMap', q => {
+          q.equalTo('artist', artist)
+        })
+        // console.log(afm_list.length)
+        for(const afm of afm_list) {
+          let file = await av.read('_File', q => {
+            q.equalTo('url', afm.get('file_url'))
+          })
+          if(file[0]) {
+            await file[0].destroy()
+            // console.log('删除file完成')
+          }
+          await afm.destroy()
+          // console.log('删除afm完成')
+        }
+        await artist.destroy()
+        console.log(`删除${++idx}/${ret.length}artist完成`)
+      }
+      // console.log('全部删除')
+    })
+  }
+
+  function deleteLowTopic(view_count) {
+    av.read('Topic', q => {
+      q.lessThan('view_count', view_count)
+      q.contains('cover_img', 'pixivtopfile')
+      q.limit(1000)
+    }).then(async ret => {
+      // console.log(ret)
+      let idx = 0
+      for(const topic of ret) {
+        let tfm_list = await av.read('TopicFileMap', q => {
+          q.equalTo('topic', topic)
+        })
+        // console.log(tfm_list.length)
+        for(const tfm of tfm_list) {
+          let file = await av.read('_File', q => {
+            q.equalTo('url', tfm.get('file_url'))
+          })
+          if(file[0]) {
+            await file[0].destroy()
+            // console.log('删除file完成')
+          }
+          await tfm.destroy()
+          // console.log('删除afm完成')
+        }
+        await topic.destroy()
+        console.log(`删除${++idx}/${ret.length}topic完成`)
+      }
+      // console.log('全部删除')
+    })
+  }
+
+  /**
+   * 传入最后时间处理时间
+   */
+  async function deleteEmptyCollection() {
+    av.read('Collection', q => {
+      q.descending('createdAt')
+      q.skip(0)
+      q.limit(1000)
+    }).then(async ret => {
+      let idx = 0
+      for(const collection of ret) {
+        if(collection.get('target_artist_file')) {
+          let afm = await av.read('ArtistFileMap', q => {
+            q.equalTo('objectId', collection.get('target_artist_file').id)
+          })
+          if(!afm[0]) {
+            await collection.destroy()
+            console.log('删除没有afm的成功')
+          }
+        } else {
+          let afm = await av.read('TopicFileMap', q => {
+            q.equalTo('objectId', collection.get('target_topic_file').id)
+          })
+          if(!afm[0]) {
+            await collection.destroy()
+            console.log('删除没有tfm的成功')
+          }
+        }
+        console.log(`${++idx}/${ret.length}完成`)
+      }
+    })
+  }
+</script>
+
+</html>

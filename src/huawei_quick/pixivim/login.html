@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="keywords" content="pixiv, P站, acg">
+  <meta name="description" content="在线分享P站美图工具">
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=3,minimum-scale=1">
+  <meta name="apple-mobile-web-app-title" content="pixivim">
+  <title>Forum - Pixivim</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="css/pixivim.css">
+  <style>
+    input,
+    button {
+      width: 200px;
+      height: 32px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="flex-c jcc aic">
+    <form class="flex-c jcc aic" onsubmit="submitForm(event)">
+      <h1>登录/注册</h1>
+      <h6 class="mt-20"><i>密码加密储存，请放心</i></h6>
+      <input name="username" class="mt-10" placeholder="请输入用户名" required>
+      <input name="password" class="my-10" type="password" placeholder="请输入密码" required>
+      <button>提交</button>
+    </form>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
+  <script src="../js/av.js"></script>
+  <script src="js/pixivim.js"></script>
+  <script src="js/wc.js"></script>
+  <script>
+    let form = document.querySelector('form')
+
+    function submitForm(e) {
+      e.preventDefault()
+      startLoading()
+      let username = form.username.value
+      let password = md5(form.password.value)
+      av.login(username, password).then(user => {
+        goHomepage()
+      }).catch(error => {
+        // 没有这个账号
+        if(error.code === 211) {
+          av.regist(username, password).then(user => {
+            console.log({ user })
+            alert(`请牢记帐密：${username}, ${form.password.value}`)
+            goHomepage()
+          })
+        } else {
+          alert(error.message)
+        }
+      }).finally(_ => {
+        endLoading()
+      })
+    }
+  </script>
+</body>
+
+</html>

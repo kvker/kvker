@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="keywords" content="pixiv, P站, acg">
+  <meta name="description" content="在线分享P站美图工具">
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=3,minimum-scale=1">
+  <meta name="apple-mobile-web-app-title" content="pixivim">
+  <title>Collection - Pixivim</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../css/custom.css">
+  <link rel="stylesheet" href="../css/pixivim.css">
+  <style>
+    body {
+      background-color: #eee;
+    }
+
+    main {
+      height: 100vh;
+      padding: 10px;
+    }
+
+    .upload-icon {
+      position: fixed;
+      right: 20px;
+      bottom: 68px;
+      width: 44px;
+      height: 44px;
+      padding: 10px;
+      box-shadow: 0 0 2px 0 #999;
+      border-radius: 50%;
+      background: white;
+      z-index: 99;
+    }
+
+    @media screen and (min-width: 480px) {
+      main {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main></main>
+
+  <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
+  <script src="../../js/av.js"></script>
+  <script src="../js/pixivim.js"></script>
+  <script src="../js/wc.js"></script>
+  <script>
+    let page = 0
+    let no_more
+    getList()
+    function getList() {
+      if(no_more) {
+        alert('没有更多了')
+        return
+      }
+      startLoading()
+      let size = 10
+      av.read('PixivimCollection', q => {
+        q.include(['one_picture.img_file', 'one_picture.author'])
+        q.descending('createdAt')
+        q.equalTo('user', av.currentUser())
+        q.skip(size * page)
+        q.limit(size)
+      }).then(ret => {
+        if(ret.length < size || !ret.length) {
+          no_more = true
+        }
+        let pv_one_card_fragment = document.createDocumentFragment()
+        ret.forEach((card_data, idx) => {
+          let pv_one_card = document.createElement('pv-one-card')
+          let data = card_data.get('one_picture').toJSON()
+          pv_one_card.data = {
+            ...data,
+            img: data.img_file.url,
+            author: data.author.username,
+          }
+          pv_one_card_fragment.append(pv_one_card)
+        })
+        document.querySelector('main').append(pv_one_card_fragment)
+      }).finally(_ => {
+        endLoading()
+      })
+    }
+
+    document.querySelector('main').addEventListener('scroll', event => {
+      let main = event.target
+      if(main.scrollHeight === main.scrollTop + main.clientHeight) {
+        page++
+        getList()
+      }
+    })
+  </script>
+</body>
+
+</html>

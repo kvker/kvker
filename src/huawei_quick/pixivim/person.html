@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="keywords" content="pixiv, P站, acg">
+  <meta name="description" content="在线分享P站美图工具">
+  <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=3,minimum-scale=1">
+  <meta name="apple-mobile-web-app-title" content="pixivim">
+  <title>Person - Pixivim</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="css/pixivim.css">
+  <style>
+    main {
+      padding: 10px;
+    }
+
+    .logout-button {
+      padding: 10px;
+      margin: 20px auto 0;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <a class="login-anchor" href="login.html">
+      <pv-cell>
+        <p>登录</p>
+      </pv-cell>
+    </a>
+    <div class="user-area" hidden>
+      <a href="person/uploaded.html">
+        <pv-cell>
+          <p>我的上传</p>
+        </pv-cell>
+      </a>
+      <a href="person/collection.html">
+        <pv-cell>
+          <p>我的收藏</p>
+        </pv-cell>
+      </a>
+      <a href="person/change_password.html">
+        <pv-cell>
+          <p>修改密码</p>
+        </pv-cell>
+      </a>
+      <a class="login-anchor" href="about.html">
+        <pv-cell>
+          <p>关于我们</p>
+        </pv-cell>
+      </a>
+
+      <button class="logout-button" onclick="clickLogout()">退出登录</button>
+    </div>
+  </main>
+
+  <pv-tabbar></pv-tabbar>
+
+  <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
+  <script src="../js/av.js"></script>
+  <script src="js/pixivim.js"></script>
+  <script src="js/wc.js"></script>
+  <script>
+    if(av.currentUser()) {
+      document.querySelector('.login-anchor').hidden = true
+      document.querySelector('.user-area').hidden = false
+    }
+    function clickLogout() {
+      if(confirm('确定退出账号吗？')) {
+        av.logout().finally(_ => {
+          history.back()
+        })
+      }
+    }
+  </script>
+</body>
+
+</html>

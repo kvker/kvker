@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Markdowner">
+  <meta name="keywords" content="Markdowner">
+  <meta name="apple-mobile-web-app-title" content="Markdowner">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Edit - Markdowner</title>
+  <link rel="stylesheet" href="/css/custom.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/default.min.css">
+  <style>
+    #editor,
+    #result {
+      width: 100%;
+      height: 48vh;
+      border: none;
+      overflow-y: scroll;
+      padding: 10px;
+    }
+
+    #result {
+      scroll-behavior: smooth;
+    }
+
+    .ctrl-box {
+      width: 100%;
+      padding: 0 10px;
+    }
+
+    .ctrl-box button {
+      width: 120px;
+      margin-left: 10px;
+    }
+
+    #remind {
+      width: 100%;
+      height: 20px;
+      padding: 0 10px;
+      line-height: 20px;
+      font-size: 12px;
+      color: #999;
+      text-align: left;
+    }
+
+    .delete {
+      display: none;
+    }
+  </style>
+</head>
+
+<body class="flex-c jcsb aic">
+  <md-top>
+    <h4 id="title">编辑页</h4>
+    <div slot="right">
+      <svg onclick="clickDelete()" t="1602671292324" class="delete" style="width: 44px;height: 44px; padding: 10px;"
+        viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5018" width="200" height="200">
+        <path
+          d="M857.728 269.781333H702.72C692.650667 189.013333 619.434667 128 532.394667 128S372.053333 188.970667 362.026667 269.781333H208.938667c-21.12 0-38.272 16.042667-38.272 35.797334 0 19.754667 17.152 35.754667 38.272 35.797333h55.466666v518.826667c0 19.797333 17.152 35.797333 38.314667 35.797333H762.026667c21.162667 0 38.272-16 38.272-35.797333V341.376h57.429333c21.12 0 38.272-16.042667 38.272-35.84 0-19.712-17.152-35.754667-38.272-35.754667z m-325.333333-71.552c45.44 0 84.650667 29.866667 93.738666 71.552H438.613333c9.088-41.642667 48.298667-71.552 93.781334-71.552z m-114.858667 536.746667c0 19.754667-17.109333 35.797333-38.272 35.797333-21.12 0-38.272-16.042667-38.272-35.797333v-286.293333c0-19.754667 17.152-35.754667 38.272-35.754667 21.162667 0 38.272 16 38.272 35.797333v286.250667z m153.130667 0c0 19.754667-17.152 35.797333-38.272 35.797333-21.162667 0-38.314667-16.042667-38.314667-35.797333v-286.293333c0-19.754667 17.152-35.754667 38.314667-35.754667 21.12 0 38.272 16 38.272 35.797333v286.250667z m153.088 0c0 19.754667-17.152 35.797333-38.272 35.797333s-38.272-16.042667-38.272-35.797333v-286.293333c0-19.754667 17.152-35.754667 38.272-35.754667s38.272 16 38.272 35.797333v286.250667z"
+          p-id="5019" fill="#e6e6e6"></path>
+      </svg>
+      <svg onclick="clickSave()" style="width: 44px;height: 44px; padding: 10px;" t="1602668932168" class="icon"
+        viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2580" width="200" height="200">
+        <path
+          d="M877.141333 0.938667H146.773333c-80.810667 0-145.92 65.109333-145.92 145.92v730.282666c0 80.810667 65.706667 145.92 145.92 145.92h730.282667c80.810667 0 145.92-65.706667 145.92-145.92V146.773333c0-80.810667-65.109333-145.92-145.92-145.92z m-581.12 75.178666h433.237334V363.52H295.936V76.117333z m654.336 801.024c0 19.626667-7.594667 37.888-21.418666 51.797334a72.618667 72.618667 0 0 1-51.797334 21.418666H146.773333a72.618667 72.618667 0 0 1-51.797333-21.418666 71.594667 71.594667 0 0 1-21.418667-51.797334V146.773333A73.386667 73.386667 0 0 1 146.773333 73.642667h73.386667v291.84c0 19.626667 7.509333 37.888 21.333333 51.797333a72.277333 72.277333 0 0 0 51.2 21.418667H731.306667c19.626667 0 37.888-7.594667 51.797333-21.418667a72.618667 72.618667 0 0 0 21.418667-51.797333V74.24h72.704c19.626667 0 37.888 7.594667 51.797333 21.504a72.618667 72.618667 0 0 1 21.418667 51.797333v729.6z"
+          p-id="2581" fill="#e6e6e6"></path>
+        <path
+          d="M582.826667 140.544c-20.906667 0-37.973333 17.066667-37.973334 37.973333v73.216c0 20.821333 17.066667 37.888 37.888 37.888 10.154667 0 19.626667-3.754667 26.538667-11.349333a38.997333 38.997333 0 0 0 11.349333-26.453333v-73.386667c0-20.821333-17.066667-37.888-37.888-37.888z"
+          p-id="2582" fill="#e6e6e6"></path>
+      </svg>
+    </div>
+  </md-top>
+  <textarea autofocus id="editor" placeholder="请输入编辑内容" oninput="inputEditor(event)"
+    onscroll="scrollEditor(event)"></textarea>
+  <div class="ctrl-box flex jcsb aic">
+    <p id="remind"></p>
+    <button onclick="clickCopyMD()">拷贝md</button>
+    <button onclick="clickCopyHTML()">拷贝html</button>
+  </div>
+  <pre id="result"></pre>
+
+  <script src="https://cdn.staticfile.org/marked/1.20/marked.min.js"></script>
+  <script src="https://cdn.staticfile.org/highlight.js/10.1.2/highlight.min.js"></script>
+  <script src="js/wc.js"></script>
+
+  <script>
+    let editor = document.querySelector('#editor')
+    let result = document.querySelector('#result')
+    let remind = document.querySelector('#remind')
+    let inputing = false
+    let scrolling = false
+    let inputing_timeout
+    let rendering_timeout
+    let scrolling_timeout
+    let notes = JSON.parse(localStorage.getItem('notes')) || []
+    let current_title = new URL(location.href).searchParams.get('title')
+    if(current_title) {
+      document.querySelector('#title').innerText = current_title
+      document.querySelector('.delete').style.display = 'initial'
+      editor.value = (notes.find(note => note.title === current_title) || {}).content || ''
+      editor.dispatchEvent(new Event('input'))
+    }
+
+    let renderer_MD = new marked.Renderer()
+    marked.setOptions({
+      renderer: renderer_MD,
+      gfm: true,
+      tables: true,
+      breaks: false,
+      pedantic: false,
+      sanitize: false,
+      smartLists: true,
+      smartypants: false,
+      highlight(code) {
+        return hljs.highlightAuto(code).value
+      }
+    })
+    result.innerHTML = marked('_请在上方输入markdown语法内容_')
+
+    function inputEditor(e) {
+      inputing = true
+      renderRemind('输入中...')
+      clearTimeout(inputing_timeout)
+      clearTimeout(rendering_timeout)
+      inputing_timeout = setTimeout(() => {
+        inputing = false
+        result.innerHTML = marked(editor.value)
+        renderRemind()
+        if(!result.innerHTML.length) {
+          result.innerHTML = marked('_请在上方输入markdown语法内容_')
+        }
+      }, 1000)
+      rendering_timeout = setTimeout(() => {
+        renderRemind('转义中...')
+      }, 500)
+    }
+
+    function scrollEditor(e) {
+      scrolling = true
+      clearTimeout(scrolling_timeout)
+      scrolling_timeout = setTimeout(() => {
+        let scroll_rate = editor.scrollTop / editor.scrollHeight
+        result.scrollTo(0, result.scrollHeight * scroll_rate)
+      }, 100)
+    }
+
+    function clickCopyMD() {
+      copyText(editor.value)
+      renderRemind('拷贝MD成功', 1)
+    }
+
+    function clickCopyHTML() {
+      copyText(result.innerHTML)
+      renderRemind('拷贝HTML成功', 1)
+    }
+
+    /**
+     * 拷贝文本
+     * @params {string} text 需要拷贝的纯文本
+     */
+    function copyText(text) {
+      let input = document.createElement('input')
+      input.value = text
+      input.style.left = '-1000px'
+      document.body.append(input)
+      input.select()
+      input.setSelectionRange(0, 99999)
+      document.execCommand('copy')
+      input.remove()
+    }
+
+    function renderRemind(text, autoclean) {
+      remind.innerText = text || ''
+      if(autoclean) {
+        setTimeout(() => {
+          remind.innerText = ''
+        }, 500)
+      }
+    }
+
+    function clickSave() {
+      let title = prompt('请输入文件名（同名替换）', current_title || '')
+      let content = editor.value
+      if(title) {
+        if(notes.find(i => i.title === title)) {
+          notes.forEach((note, idx) => {
+            if(note.title === title) {
+              note.content = content
+            }
+          })
+        } else {
+          notes.push({
+            title,
+            content
+          })
+        }
+        localStorage.setItem('notes', JSON.stringify(notes))
+        history.back()
+      } else if(title !== null) {
+        alert('请输入文件名再继续')
+      }
+    }
+
+    function clickDelete() {
+      let is_find = false
+      let current_idx = 0
+      for(const note of notes) {
+        if(note.title === current_title) {
+          is_find = true
+          break
+        }
+        current_idx++
+      }
+      if(is_find) {
+        if(confirm('确定删除吗？')) {
+          notes.splice(current_idx, 1)
+          localStorage.setItem('notes', JSON.stringify(notes))
+          history.back()
+        }
+      } else {
+        alert('没有相应文章')
+      }
+    }
+  </script>
+</body>
+
+</html>

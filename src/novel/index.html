@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <title>我的小说</title>
+  <meta name="description" content="我自己爬取的小说, 仅限自己看, 别闹">
+  <meta name="apple-mobile-web-app-title" content="我的小说">
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <button style="margin: 15px 0;" type="button" class="btn btn-primary btn-block" onclick="refresh()">刷新</button>
+    <div class="cards"></div>
+  </div>
+
+  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.6.1/dist/av-min.js"></script>
+  <script src="global_config.js"></script>
+  <script>
+    let book_list = JSON.parse(localStorage.getItem('book_list'))
+    if(book_list) {
+      renderBookList()
+    } else {
+      refresh()
+    }
+
+    function refresh() {
+      let query = new AV.Query('WxwBook')
+      query.select(['name', 'type'])
+      query.ascending('createdAt')
+      query.find().then(ret => {
+        book_list = ret.map(i => i.toJSON())
+        localStorage.setItem('book_list', JSON.stringify(book_list))
+        // console.log(ret)
+        renderBookList()
+      })
+    }
+
+    function renderBookList() {
+      document.querySelector('.cards').insertAdjacentHTML('beforeend', book_list.reduce((p, c, idx) => {
+        p +=
+          `
+            <div class="card" style="margin-bottom: 15px;" data-id="${c.objectId}" data-idx="${idx}">
+              <div class="card-body">
+                <h4 class="card-title">${c.name}</h4>
+                <p class="card-text">${c.type}</p>
+              </div>
+            </div>
+          `
+        return p
+      }, ''))
+    }
+
+    // 事件委托处理
+    document.documentElement.addEventListener('click', function(e) {
+      let target = e.target.closest('.card')
+      if(!target) return
+      let id = target.dataset.id
+      if(!id) return
+      let idx = +target.dataset.idx
+      let item = book_list[idx]
+      book_list.splice(idx, 1)
+      book_list.unshift(item)
+      localStorage.setItem('book_list', JSON.stringify(book_list))
+      location.href = `detail.html?book_id=${id}`
+    })
+
+  </script>
+</body>
+
+</html>

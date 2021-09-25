@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <title>手动画师</title>
+</head>
+
+<body>
+  <pt-nav></pt-nav>
+  <h2>手动画师</h2>
+  <div>
+    <input id="artist_name" type="text" placeholder="画师名">
+    <br>
+    <br>
+    <input id="imgs" type="file" multiple accept="image/*">
+    <br>
+    <br>
+    <button onclick="app.submitImgs(event)">提交</button>
+    <progress id="progress" value="0" max="100"></progress>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.5.3/dist/av-min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.8.26/dayjs.min.js"></script>
+  <script src="/js/kk.js"></script>
+  <script src="/js/base.js"></script>
+  <script src="av.js"></script>
+  <script src="wc.js"></script>
+</body>
+<script>
+  const app = new class App extends Base {
+    constructor() {
+      super()
+      this.idx = 0
+    }
+
+    /**
+   * 手动上传画师
+   */
+    async submitImgs() {
+      let artist_name = document.querySelector('#artist_name').value
+      let artist
+      if(!artist_name.trim()) {
+        alert('画师名, 傻逼')
+        return
+      }
+      if(this.idx) {
+        alert('上传中')
+        return
+      }
+      let ret = await av.read('Artist', q => {
+        q.equalTo('name', artist_name)
+      })
+
+      if(ret.length) {
+        artist = ret[0]
+      } else {
+        artist = await av.create('Artist', {
+          name: artist_name
+        })
+      }
+
+      let files = document.querySelector('#imgs').files
+      let progress = document.querySelector('#progress')
+      progress.max = files.length
+      // console.log(files)
+      for(const file of files) {
+        let too_big
+        progress.value = ++this.idx
+        // 大小超过20M, 七牛缩略图有问题, 这里直接pass
+        if(file.size > 20000000) {
+          too_big = true
+        }
+        let url = window.URL.createObjectURL(file)
+        let img = document.createElement('img')
+        img.src = url
+        let e = await this.imgHandler(img)
+        let base64 = this.img2Base64(e.target)
+        let ret = await av.uploadBase64(base64)
+        try {
+          await av.create('ArtistFileMap', {
+            artist,
+            status: too_big ? 2 : 1,
+            file_url: ret.get('url')
+          })
+        } catch(error) {
+          console.error(error)
+        }
+        if(this.idx === 1) {
+          await artist.set({
+            cover_img: ret.get('url')
+          }).save()
+        }
+      }
+      alert('上传完成')
+      this.idx = 0
+    }
+
+    imgHandler(img) {
+      return new Promise((resolve, reject) => {
+        img.onload = async e => {
+          resolve(e)
+        }
+      })
+    }
+
+    img2Base64(img, ext) {
+      const canvas = document.createElement("canvas")
+      canvas.width = img.width
+      canvas.height = img.height
+      const ctx = canvas.getContext("2d")
+      ctx.drawImage(img, 0, 0, img.width, img.height)
+      return canvas.toDataURL("image/" + ext)
+    }
+  }
+</script>
+
+</html>

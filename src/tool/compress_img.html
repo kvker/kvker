@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <title>kvker的个人网站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="description" content="kvker个人的聚合搜索网站, 搜罗多多的网站">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel='stylesheet' href='/css/custom.css' />
+
+  <style>
+    .compress {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <nav class="flex jcsb top-nav">
+    <div class="nav-side"></div>
+    <div class="flex jcc aic">
+      <a class="nav-item" href="/">首页</a>
+      <a class="nav-item" href="/tool.html">工具</a>
+    </div>
+    <div id="account" class="nav-side">账号</div>
+  </nav>
+
+  <main>
+    <div class="compress">
+      <input id="input" type="file" onchange="page.changeInput(event)" accept="image/*">
+      <a id="download" style="display: none;margin-top: var(--main_gap);" href="#" download>
+        <p>点击图片下载</p>
+        <img id="img" class="preview" src="#" alt='img'>
+      </a>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
+  <script src="/js/av.js"></script>
+  <script src="/js/kk.js"></script>
+  <script src="/js/base.js"></script>
+
+  <script>
+    let result_url
+    const page = new class Page extends Base {
+      constructor() {
+        super()
+      }
+
+      get result_url() {
+        return result_url
+      }
+
+      set result_url(val) {
+        this.update({
+          img: {
+            src: val
+          }
+        })
+        result_url = val
+      }
+
+      changeInput(e) {
+        this.el.download.style.display = 'none'
+        // 压缩图片需要的一些元素和对象
+        let reader = new FileReader()
+        //创建一个img对象
+        let img = new Image()
+        // 缩放图片需要的canvas
+        let canvas = document.createElement('canvas')
+        let ctx = canvas.getContext('2d')
+
+        // 选择的文件对象
+        let file = e.target.files[0]
+        console.log(file.size)
+        reader.readAsDataURL(file)
+        // 文件base64化，以便获知图片原始尺寸
+        reader.onload = e => {
+          img.src = e.target.result
+        }
+
+        // base64地址图片加载完毕后
+        img.onload = _ => {
+          let width = img.width
+          let height = img.height
+          if(width > 1200) {
+            height = height * 1200 / width
+            width = 1200
+          }
+          canvas.width = width
+          canvas.height = height
+          ctx.clearRect(0, 0, width, height)
+          ctx.drawImage(img, 0, 0, width, height)
+          this.result_url = canvas.toDataURL('image/jpeg', 0.92)
+          // console.log(this.result_url.length * 0.75)
+          this.el.download.style.display = 'block'
+          this.update({
+            download: {
+              href: this.result_url,
+              download: '图片',
+            }
+          })
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+
+<html lang="zh">
+
+<head>
+  <title>作品详情</title>
+  <meta name="description" content="某个作品的详情与章节列表">
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-title" content="作品详情">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <div style="margin-top: 15px;">
+      <mark class="lead" id="current_item" onclick="clickCurrentItem(event)"></mark>
+    </div>
+    <div class="d-flex justify-content-between align-items-center" style="margin: 15px 0;">
+      <a href="/">返回首页</a>
+      <button type="button" class="btn btn-primary" onclick="deleteCache()">删除缓存</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@4.6.1/dist/av-min.js"></script>
+  <script src="global_config.js"></script>
+  <script>
+    let current_item = document.querySelector('#current_item')
+    let book_id = location.$query.book_id
+    let book_info = JSON.parse(localStorage.getItem(book_id)) || { title_list: [], current: {} }
+    current_item.innerText = '当前: ' + book_info.current ? book_info.current.title : 'loading...'
+    document.documentElement.addEventListener('click', function(e) {
+      let item = e.target.closest('.card')
+      if(item) {
+        location.href = `reader.html?title_id=${item.dataset.id}&book_id=${book_id}`
+      }
+    })
+
+    if(book_info.title_list.length) {
+      document.querySelector('.container').insertAdjacentHTML('beforeend', book_info.title_list.reduce((p, c, idx) => {
+        p += `
+          <div class="card" style="margin-bottom: 15px;" data-id="${c.objectId}" data-idx="${idx}">
+            <div class="card-body">${c.title}</div>
+          </div>
+        `
+        return p
+      }, ''))
+    } else {
+      getList()
+    }
+
+    function getList(page = 0) {
+      let query = new AV.Query('Wxw')
+      query.equalTo('wxw_book', AV.Object.createWithoutData('WxwBook', book_id))
+      query.ascending('createdAt')
+      query.select(['title'])
+      query.limit(1000)
+      query.skip(page * 1000)
+      query.find().then(ret => {
+        document.querySelector('.container').insertAdjacentHTML('beforeend', ret.reduce((p, c, idx) => {
+          p += `
+            <div class="card" style="margin-bottom: 15px;" data-id="${c.objectId}" data-idx="${idx}">
+              <div class="card-body">${c.title}</div>
+            </div>
+          `
+          return p
+        }, ''))
+        book_info.title_list = [...book_info.title_list, ...ret.map(i => i.toJSON())]
+        if(ret.length === 1000) {
+          getList(++page)
+        } else {
+          book_info.current = book_info.title_list[0]
+          current_item.innerText = '当前: ' + book_info.current.title
+          localStorage.setItem(book_id, JSON.stringify(book_info))
+        }
+      })
+    }
+
+    function clickCurrentItem(e) {
+      e.stopPropagation()
+      location.href = `reader.html?title_id=${book_info.current.objectId}&book_id=${book_id}`
+    }
+
+    function deleteCache() {
+      localStorage.removeItem(book_id)
+      alert('删除成功')
+    }
+  </script>
+</body>
+
+</html>

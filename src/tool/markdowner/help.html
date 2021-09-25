@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Markdowner">
+  <meta name="keywords" content="Markdowner">
+  <meta name="apple-mobile-web-app-title" content="Markdowner">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Help - Markdowner</title>
+  <link rel="stylesheet" href="/css/custom.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/default.min.css">
+  <style>
+    img, video {
+      max-width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <md-top style="position: fixed;top:0;left:0;">
+    <h4>Markdown语法</h4>
+  </md-top>
+  <pre style="padding: 10px;padding-top: 54px;"></pre>
+
+  <script src="https://cdn.staticfile.org/marked/1.20/marked.min.js"></script>
+  <script src="https://cdn.staticfile.org/highlight.js/10.1.2/highlight.min.js"></script>
+  <script src="js/wc.js"></script>
+  <script>
+    let renderer_MD = new marked.Renderer()
+    marked.setOptions({
+      renderer: renderer_MD,
+      gfm: true,
+      tables: true,
+      breaks: false,
+      pedantic: false,
+      sanitize: false,
+      smartLists: true,
+      smartypants: false,
+      highlight(code) {
+        return hljs.highlightAuto(code).value
+      }
+    })
+    fetch('doc/help.md').then(ret => {
+      ret.text().then(text => {
+        document.querySelector('pre').innerHTML = marked(text)
+      })
+    })
+  </script>
+</body>
+
+</html>

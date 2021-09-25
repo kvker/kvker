@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <title>画师</title>
+</head>
+
+<body>
+  <pt-nav></pt-nav>
+  <h2>画师</h2>
+  <input id="artist_name" type="text" placeholder="输入画师">
+  <br>
+  <label>
+    去首
+    <input id="filter_first" type="checkbox">
+  </label>
+  <label>
+    去尾
+    <input id="filter_last" type="checkbox">
+  </label>
+  <br>
+  <br>
+  <input id="url_input" type="text" placeholder="完整微信完整链接">
+  <br>
+  <br>
+  <button onclick="app.submitUrl()">提交</button>
+  <progress id="progress" value="0" max="100"></progress>
+
+  <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.5.3/dist/av-min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.8.26/dayjs.min.js"></script>
+  <script src="/js/kk.js"></script>
+  <script src="/js/base.js"></script>
+  <script src="av.js"></script>
+  <script src="wc.js"></script>
+</body>
+<script>
+  const app = new class App extends Base {
+    constructor() {
+      super()
+      document.addEventListener('visibilitychange', function(e) {
+        if(document.visibilityState === 'visible') {
+          document.querySelector('#url_input').focus()
+          document.querySelector('#url_input').value = ''
+        }
+      })
+    }
+
+    /**
+     * 解析公众号画师专题
+     */
+    async submitUrl() {
+      let data = {
+        url: document.querySelector('#url_input').value,
+      }
+      let artist_name = document.querySelector('#artist_name').value
+      let artist
+      if(!artist_name.trim()) {
+        alert('画师名, 傻逼')
+        return
+      }
+      if(!data.url.trim()) {
+        alert('链接, 傻逼')
+        return
+      }
+      let ret = await av.read('Artist', q => {
+        q.equalTo('name', artist_name)
+      })
+
+      if(ret.length) {
+        artist = ret[0]
+      } else {
+        artist = await av.create('Artist', {
+          name: artist_name
+        })
+      }
+      // 是否去尾
+      if(document.querySelector('#filter_first').checked) {
+        data.filter_first = true
+      }
+      // 是否去尾
+      if(document.querySelector('#filter_last').checked) {
+        data.filter_last = true
+      }
+      let progress = document.querySelector('#progress')
+      let idx = 0
+      this.post(this.url.cf, data).then(async ret => {
+        // console.log(ret)
+        let urls = ret.list
+        progress.max = urls.length
+        for(const url of urls) {
+          let ret = await av.uploadWithUrl(url)
+          await av.create('ArtistFileMap', {
+            artist,
+            file_url: ret.get('url')
+          })
+          progress.value = ++idx
+          // todo 添加封面图
+          if(idx === 1) {
+            await artist.set({
+              cover_img: ret.get('url')
+            }).save()
+          }
+        }
+      })
+    }
+  }
+</script>
+
+</html>

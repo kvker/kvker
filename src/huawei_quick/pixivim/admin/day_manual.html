@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <title>手动日推</title>
+</head>
+
+<body>
+  <pt-nav></pt-nav>
+  <h2>手动日推(默认去首)</h2>
+  <input id="date_input" type="text" placeholder="输入日期">
+  <br>
+  <br>
+  <input id="imgs" type="file" multiple accept="image/*">
+  <br>
+  <br>
+  <button onclick="submit()">提交</button>
+  <progress id="progress" value="0" max="100"></progress>
+
+  <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.5.3/dist/av-min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.8.26/dayjs.min.js"></script>
+  <script src="av.js"></script>
+  <script src="wc.js"></script>
+</body>
+<script>
+  // 临时更新脚本
+  document.addEventListener('visibilitychange', function(e) {
+    if(document.visibilityState === 'visible') {
+      document.querySelector('#url_input').value = ''
+      document.querySelector('#url_input').focus()
+    }
+  })
+  document.querySelector('#date_input').value = dayjs().format('YYYY/MM/DD')
+  /**
+   * 解析公众号每日推送
+   */
+  async function submit() {
+    let date_input = document.querySelector('#date_input').value
+    let topic
+    if(!date_input.trim()) {
+      alert('日期, 傻逼')
+      return
+    }
+
+    let files = document.querySelector('#imgs').files
+    let progress = document.querySelector('#progress')
+    progress.max = files.length
+    // console.log(files)
+    let idx = 0
+    let imgs = []
+    let cover_img
+    for(const file of files) {
+      progress.value = ++idx
+      let url = window.URL.createObjectURL(file)
+      let img = document.createElement('img')
+      img.src = url
+      let e = await imgHandler(img)
+      let base64 = img2Base64(e.target)
+      let ret = await av.uploadBase64(base64)
+      imgs.push(ret.get('url'))
+      // todo 添加封面图
+      if(idx === 1) {
+        cover_img = ret.get('url')
+      }
+    }
+    av.create('Day', {
+      date: new Date(date_input),
+      cover_img,
+      imgs,
+    }).then(ret => {
+      alert('上传成功')
+    })
+  }
+
+  function imgHandler(img) {
+    return new Promise((resolve, reject) => {
+      img.onload = async e => {
+        resolve(e)
+      }
+    })
+  }
+
+  function img2Base64(img, ext) {
+    const canvas = document.createElement("canvas")
+    canvas.width = img.width
+    canvas.height = img.height
+    const ctx = canvas.getContext("2d")
+    ctx.drawImage(img, 0, 0, img.width, img.height)
+    return canvas.toDataURL("image/" + ext)
+  }
+</script>
+
+</html>

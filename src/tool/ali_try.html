@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <title>kvker的个人网站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="description" content="kvker个人的聚合搜索网站, 搜罗多多的网站">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel='stylesheet' href='/css/custom.css' />
+
+  <style>
+    .ali-try {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .tokens {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    .tokens input {
+      margin-bottom: 20px;
+    }
+
+    .btn-page {
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      z-index: 1000;
+    }
+
+    .btn-page .btn-next,
+    .btn-initial {
+      width: 92px;
+      height: 36px;
+      line-height: 36px;
+      background: #4caf50;
+      color: #fff;
+      border-radius: 4px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .current_page {
+      width: 100px;
+      height: 36px;
+      line-height: 36px;
+      background: #f9fbe7;
+      color: #666;
+      margin-left: 10px;
+      padding: 0 10px;
+    }
+
+    .tr.warning {
+      color: red;
+    }
+
+    button {
+      width: 100px;
+      height: 44px;
+    }
+
+    .table {
+      width: 100%;
+      height: 100%;
+      border-collapse: collapse;
+    }
+
+    .thead,
+    .tr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .thead {
+      line-height: 44px;
+    }
+
+    .tbody {
+      height: 100%;
+      overflow-y: scroll;
+      padding-bottom: 80px;
+    }
+
+    .tr {
+      min-height: 48px;
+      text-decoration: none;
+    }
+
+    .tbody .tr {
+      min-height: 64px;
+    }
+
+    .tr:hover {
+      background: #e6ee9c;
+      cursor: pointer;
+    }
+
+    img {
+      width: 44px;
+      height: 44px;
+    }
+
+    .th,
+    .td {
+      text-align: center;
+    }
+
+    .th:nth-child(1),
+    .td:nth-child(1) {
+      flex: 1;
+    }
+
+    .th:nth-child(2),
+    .td:nth-child(2) {
+      flex: 2;
+    }
+
+    .th:nth-child(3),
+    .td:nth-child(3) {
+      flex: 5;
+      text-align: left;
+    }
+
+    .th:nth-child(4),
+    .td:nth-child(4) {
+      flex: 2;
+    }
+
+    .td:nth-child(4) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .td {
+      position: relative;
+    }
+
+    .remind {
+      color: #999;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body class="flex">
+  <main class="ali-try">
+    <!-- 没有数据不显示 -->
+    <section id="table" class="table">
+      <section class="thead">
+        <span class="th">序号</span>
+        <span class="th">概率</span>
+        <span class="th">名字</span>
+        <span class="th">缩略图</span>
+      </section>
+      <section id="tbody" class="tbody">
+
+      </section>
+      <section class="btn-page">
+        <div class="btn-next" onclick="page.getNextList()">下一页</div>
+        <span id="current_page" class="current_page"></span>
+      </section>
+    </section>
+    <section id="login" class="tokens">
+      <input placeholder="cookie" id="cookie" />
+      <input placeholder="x-csrf-token" id="token" />
+      <button class="btn-initial" onclick="page.getList()">初始化</button>
+      <p class="remind">如果无法初始化，请自行拷贝try.taobao.com的cookie与x-csrf-token，登陆成功自动保存本地</p>
+    </section>
+  </main>
+
+  <script src="/js/kk.js"></script>
+  <script src="/js/base.js"></script>
+  <script>
+    const COOKIE = 'kk-ali-sort-cookie'
+    const TOKEN = 'kk-ali-sort-token'
+
+    const page = new class Page extends Base {
+      constructor() {
+        super({
+          cookie: {
+            value: localStorage.getItem(COOKIE),
+          },
+          token: {
+            value: localStorage.getItem(TOKEN),
+          },
+        })
+        // 当前页面
+        this.current_page = 1
+        // 全部数据
+        this.list = []
+        // 锁频率使用，标记上次时间
+        this.current_time = 0
+        // 锁频率步长，单位秒
+        this.loop_interval = 2
+        // 是否获取到内容
+        this.show = false
+      }
+
+      get current_page_text() {
+        return `当前页: ${this.current_page}`
+      }
+
+      get req_auth() {
+        this.cookie = this.el.cookie.value
+        this.token = this.el.token.value
+        return {
+          cookie: this.cookie,
+          token: this.token,
+          ua: navigator.userAgent,
+        }
+      }
+
+      set show(value) {
+        if(value) {
+          this.el.table.style.display = 'block'
+          this.el.login.style.display = 'none'
+        } else {
+          this.el.table.style.display = 'none'
+          this.el.login.style.display = 'flex'
+        }
+      }
+
+      async getList(from_next) {
+        // if(!this.user) {
+        //   alert('请先登录或注册')
+        //   return
+        // }
+        // 锁频率步长内取消请求
+        const newTime = new Date().getTime()
+        const shoudBack = newTime - this.current_time < this.loop_interval * 1000
+        if(shoudBack) {
+          alert(this.loop_interval + '秒内不要多次点击哦。')
+          return
+        }
+        this.current_time = newTime
+        let ret = await this.post(this.url.cf, { page: this.current_page, ali_try: true, ...this.req_auth })
+        if(ret) {
+          this.show = true
+          this.saveLocal()
+          let list = ret.list
+          if(from_next) {
+            list = [...this.list, ...list]
+          }
+          this.list = list.sort((a, b) => {
+            return b.rate - a.rate
+          })
+          this.update({
+            current_page: this.current_page_text,
+            tbody: {
+              html: list.reduce((p, c, idx) => {
+                p += `
+                <a class="tr ${c.rate >= 5 ? 'warning' : ''}"
+                  href="https://try.taobao.com/item.htm?id=${c.id}" target="_blank">
+                  <span class="td">${idx + 1}</span>
+                  ${
+                  c.rate
+                    ? `<span class="td">${c.rate.toFixed(1)}%</span>`
+                    : '<span class="td">无人申请</span>'
+                  }
+                  <span class="td">${c.title}</span>
+                  <span class="td">
+                    <img class="img" src="${c.pic}" />
+                  </span>
+                </a>
+                `
+                return p
+              }, '')
+            }
+          }, 'replace')
+        }
+      }
+
+      getNextList() {
+        this.current_page++
+        this.update({
+          current_page: this.current_page_text,
+        })
+        this.getList(true)
+      }
+
+      saveLocal() {
+        localStorage.setItem(COOKIE, this.cookie)
+        localStorage.setItem(TOKEN, this.token)
+      }
+    }
+  </script>
+
+</body>
+
+</html>

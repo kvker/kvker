@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Markdowner">
+  <meta name="keywords" content="Markdowner">
+  <meta name="apple-mobile-web-app-title" content="Markdowner">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Markdowner</title>
+  <link rel="stylesheet" href="/css/custom.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/default.min.css">
+  <style>
+    md-top {
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    .add-button {
+      width: 44px;
+      height: 44px;
+    }
+
+    .add-button svg {
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+    }
+
+    .notes {
+      padding-top: 44px;
+    }
+
+    .note {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 44px;
+      padding-left: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .note svg {
+      width: 44px;
+      height: 44px;
+      padding: 10px;
+    }
+
+    .empty {
+      margin-top: 80px;
+      font-weight: bold;
+      color: #666;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <md-top no_left="1">
+    <a slot="left" style="width: 44px;height: 44px;" href="help.html"><svg
+        style="width: 100%;height: 100%;padding: 10px;" t="1602647224371" class="icon" viewBox="0 0 1024 1024"
+        version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1173" width="200" height="200">
+        <path
+          d="M603.6 842.7h-191c-52.7 0-88.2-36.9-88.2-91.9v-100c-32.7-22.3-72.6-55.7-98.8-99-30-49.6-45.9-106.4-45.9-164.3 0-86.6 34.7-168 97.6-229.2C340 97.3 423.4 63.8 512 63.8s171.9 33.6 234.7 94.5c63 61.2 97.6 142.6 97.6 229.2 0 58-16 114.9-46.1 164.5-25.6 42.2-66.6 76-100.4 98.8v99.8c0 25.8-9.6 49.4-27.1 66.3-17.2 16.6-41 25.8-67.1 25.8zM512 120c-73.9 0-143.3 27.9-195.5 78.6-51.9 50.5-80.6 117.6-80.6 188.9 0 47.6 13.1 94.3 37.8 135.1 18.9 31.2 52.2 62.8 93.8 89.2l13.1 8.3v130.7c0 35.6 24 35.6 31.9 35.6h191c23.1 0 38-14.1 38-35.8V620l13.1-8.3c30.7-19.3 72.1-50.4 95.5-88.9C774.9 482 788 435.2 788 387.5c0-71.3-28.6-138.4-80.6-188.9C655.3 147.9 585.9 120 512 120z"
+          fill="#ffffff" p-id="1174"></path>
+        <path
+          d="M613.2 960.2H410.8c-15.5 0-28.1-12.6-28.1-28.1s12.6-28.1 28.1-28.1h202.3c15.5 0 28.1 12.6 28.1 28.1s-12.5 28.1-28 28.1z"
+          fill="#ffffff" p-id="1175"></path>
+        <path
+          d="M666.5 666.7h-309c-15.5 0-28.1-12.6-28.1-28.1s12.6-28.1 28.1-28.1h309.1c15.5 0 28.1 12.6 28.1 28.1s-12.6 28.1-28.2 28.1z"
+          fill="#ffffff" p-id="1176"></path>
+      </svg>
+    </a>
+    <h4>本地文件</h4>
+    <a slot="right" class="add-button" href="edit.html"><svg t="1602668554774" class="icon" viewBox="0 0 1024 1024"
+        version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1659" width="200" height="200">
+        <path
+          d="M512.118 47.258C255.4 47.258 47.145 255.278 47.145 512c0 256.604 208.256 464.742 464.973 464.742 256.481 0 464.742-208.138 464.742-464.742 0-256.722-208.261-464.742-464.742-464.742zM744.489 570.03H570.04v174.341H453.97v-174.34H279.752V453.846H453.97V279.629h116.07v174.218H744.49V570.03z"
+          p-id="1660" fill="#ffffff"></path>
+      </svg>
+    </a>
+  </md-top>
+  <div class="notes"></div>
+  <p class="empty" hidden>请右上角新建一篇文章</p>
+
+  <script src="js/wc.js"></script>
+
+  <script>
+    let notes = JSON.parse(localStorage.getItem('notes')) || []
+    if(notes.length) {
+      let notes_html = notes.reduce((p, c, idx) => {
+        p += `<a class="note" href="edit.html?title=${c.title}">
+        <p>${c.title}</p>
+        <svg t="1602670506416" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3964" width="200" height="200"><path d="M689.621 512l-328.832-328.832-60.331 60.331 268.501 268.501-268.501 268.501 60.331 60.331z" p-id="3965" fill="#999999"></path></svg>
+      </a>`
+        return p
+      }, '')
+      document.querySelector(".notes").insertAdjacentHTML('beforeend', notes_html)
+    } else {
+      document.querySelector('.empty').hidden = false
+    }
+  </script>
+</body>
+
+</html>
