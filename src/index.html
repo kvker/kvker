@@ -10,14 +10,16 @@
     <link rel="stylesheet" href="/static/css/index.css" />
   </head>
   <body>
-    <main>
-      <div>
+    <main class="relative">
+      <div style="position: sticky; top: 47px;">
         <input id="search_input" placeholder="名称, 简述, 内容(没搜到则百度)" autofocus="" />
         <button class="mr-10" id="search_btn">搜索</button>
         <button class="mr-10" id="refresh_btn">刷新</button>
         <button class="mr-10" id="add_btn" style="display: none">新增</button>
       </div>
       <div class="flex flex-wrap jcsb" id="card_list"></div>
+      <button class="scroll-button" onclick="javascript: document.documentElement.scrollTo(0, 0)">顶</button>
+      <button class="scroll-button bottom" onclick="javascript: document.documentElement.scrollTo(0, 1000000)">底</button>
     </main>
     <footer style="position: fixed; bottom: 0; right: 0"><a style="color: #333" href="http://www.beian.miit.gov.cn" target="_blank">浙ICP备19013783号-1</a></footer>
 

@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 main {
   padding: var(--main_gap) 20px;
 }
@@ -45,4 +49,21 @@ main {
   #search_input {
     color: #333;
   }
+}
+
+button {
+  background-color: white;
+}
+
+.scroll-button {
+  position: fixed;
+  right: 20px;
+  bottom: 140px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.scroll-button.bottom {
+  bottom: 80px;
 }
