@@ -115,7 +115,7 @@
         if(confirm('确定删除吗?') && this.user) {
           av.delete('Note', this.id).then(ret => {
             alert('删除成功')
-            location.replace('/art.html')
+            location.replace('/')
           })
         }
       }
