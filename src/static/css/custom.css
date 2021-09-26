@@ -761,6 +761,7 @@ m-0 {
   position: sticky;
   top: 0;
   background-color: #333;
+  z-index: 1;
 }
 
 .nav-side {
