@@ -4,7 +4,7 @@
   "description": "kvker个人笔记站",
   "private": true,
   "scripts": {
-    "dev": "anywhere -d src/ -p 18002",
+    "dev": "anywhere -s -d src/ -p 18002",
     "start": "npm run build && node server.js",
     "tasks": "grunt --help",
     "build": "grunt"
