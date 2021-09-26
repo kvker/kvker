@@ -11,7 +11,7 @@ customElements.define('pv-tabbar', class extends HTMLElement {
     let path_splits = location.pathname.split('/')
     let filename = path_splits[path_splits.length - 1] || 'index.html'
     shadow.innerHTML = `
-      <link rel="stylesheet" href="/css/custom.css">
+      <link rel="stylesheet" href="/static/css/custom.css">
       <style>
         .tabbar {
           display: flex;

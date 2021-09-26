@@ -11,7 +11,7 @@ customElements.define('md-top', class extends HTMLElement {
     let no_left = this.getAttribute('no_left') || this.getAttribute('no_back')
     // console.log(no_left)
     this.shadowRoot.innerHTML = `
-      <link rel="stylesheet" href="/css/custom.css">
+      <link rel="stylesheet" href="/static/css/custom.css">
       <style>
         :host {
           width: 100%;
