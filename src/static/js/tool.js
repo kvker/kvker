@@ -31,11 +31,6 @@ new (class Page extends Base {
         link: 'tool/reverse_gif.html',
       },
       {
-        name: 'P站日榜',
-        summary: 'P站日榜上传后台',
-        link: 'http://pixivtop.ilikecats.cn/',
-      },
-      {
         name: 'Fetch简介',
         summary: '文档',
         link: 'doc/fetch.html',
@@ -49,11 +44,6 @@ new (class Page extends Base {
         name: 'markdowner',
         summary: '极简markdown编辑器',
         link: 'tool/markdowner/',
-      },
-      {
-        name: 'pixivim',
-        summary: 'pixivim',
-        link: 'huawei_quick/pixivim/',
       },
       {
         name: 'autopiano',
