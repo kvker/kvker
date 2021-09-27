@@ -1,16 +1,10 @@
 {
   "name": "website",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "kvker个人笔记站",
-  "private": true,
   "scripts": {
     "dev": "anywhere -s -d src/ -p 18002",
-    "start": "npm run build && node server.js",
-    "tasks": "grunt --help",
     "build": "grunt"
-  },
-  "engines": {
-    "node": "14.x"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
@@ -27,10 +21,5 @@
     "grunt-contrib-nodeunit": "^3.0.0",
     "grunt-contrib-uglify": "^5.0.1",
     "nodemon": "^2.0.7"
-  },
-  "dependencies": {
-    "express": "^4.17.1",
-    "leancloud-storage": "^4.12.0",
-    "leanengine": "^3.8.0"
   }
 }
