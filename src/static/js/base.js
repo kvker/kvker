@@ -88,4 +88,12 @@ class Base extends KK {
       }).catch(alert)
     }
   }
+
+  loading() {
+    document.body.style.opacity = 0.5
+  }
+
+  unloading() {
+    document.body.style.opacity = 1
+  }
 }

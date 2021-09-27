@@ -19,6 +19,7 @@ let renderer_MD = new marked.Renderer()
         if(this.userinfo) {
           this.el.ctrls_box.style.display = 'block'
         }
+        this.loading()
         av.read('Note', q => {
           q.equalTo('objectId', this.id)
         }).then(ret => {
@@ -39,7 +40,7 @@ let renderer_MD = new marked.Renderer()
         }).catch(error => {
           console.error(error)
           alert(error.message)
-        })
+        }).finally(this.unloading)
       }
 
       listenLogin() {

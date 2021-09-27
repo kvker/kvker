@@ -1,27 +1,30 @@
-const app = new class extends Base {
+const app = new (class extends Base {
   constructor() {
     super()
-    document.addEventListener('dragover', e => {
+    document.addEventListener('dragover', (e) => {
       e.preventDefault()
     })
-    document.addEventListener('drop', e => {
+    document.addEventListener('drop', (e) => {
       e.preventDefault()
     })
     this.el.complete_btn.addEventListener('click', this.clickComplete.bind(this))
     this.id = this.query_params.id
-    if(this.id) {
-      av.read('Note', q => {
+    if (this.id) {
+      this.loading()
+      av.read('Note', (q) => {
         q.equalTo('objectId', this.id)
-      }).then(ret => {
-        let item = ret[0]
-        this.update({
-          title: item.get('title'),
-          content: item.get('content')
-        })
-      }).catch(error => {
-        console.error(error)
-        alert(error.message)
       })
+        .then((ret) => {
+          let item = ret[0]
+          this.update({
+            title: item.get('title'),
+            content: item.get('content'),
+          })
+        })
+        .catch((error) => {
+          console.error(error)
+          alert(error.message)
+        }).finally(this.unloading)
     }
   }
 
@@ -36,28 +39,28 @@ const app = new class extends Base {
   clickComplete() {
     // console.log(this)
     document.body.style.opacity = 0.5
-    if(this.user) {
-      if(this.id) {
+    if (this.user) {
+      this.loading()
+      if (this.id) {
         av.update('Note', this.id, {
           title: this.el.title.value,
           content: this.el.content.value,
-        }).then(ret => {
+        }).then((ret) => {
           alert('更新成功')
           location.replace('/')
-        })
+        }).finally(this.unloading)
       } else {
         av.create('Note', {
           title: this.el.title.value,
           content: this.el.content.value,
-        }).then(ret => {
+        }).then((ret) => {
           alert('创建成功')
           location.replace('/')
-        })
+        }).finally(this.unloading)
       }
     } else {
       alert('未登录')
     }
-    document.body.style.opacity = 1
   }
 
   dropTextarea(e) {
@@ -67,7 +70,7 @@ const app = new class extends Base {
 
     file_reader.readAsDataURL(file)
     file_reader.onload = () => {
-      av.upload(file_reader.result).then(ret => {
+      av.upload(file_reader.result).then((ret) => {
         this.insert2Textarea(e.target, `[img](${ret.get('url')})`)
       })
     }
@@ -75,7 +78,7 @@ const app = new class extends Base {
 
   keydownTextarea(e) {
     let key_code = e.keyCode
-    if(key_code === 9) {
+    if (key_code === 9) {
       e.preventDefault()
       this.insert2Textarea(e.target, '  ')
     }
@@ -91,9 +94,9 @@ const app = new class extends Base {
 
   pasteTextarea(e) {
     let items = e.clipboardData.items
-    for(let i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
       let item = items[i]
-      if(item.type.includes("image")) {
+      if (item.type.includes('image')) {
         document.body.style.opacity = 0.5
         e.preventDefault()
         let item = items[i]
@@ -102,13 +105,15 @@ const app = new class extends Base {
 
         file_reader.readAsDataURL(file)
         file_reader.onload = () => {
-          av.upload(file_reader.result).then(ret => {
-            this.insert2Textarea(e.target, `[img](${ret.get('url')})`)
-          }).finally(_ => {
-            document.body.style.opacity = 1
-          })
+          av.upload(file_reader.result)
+            .then((ret) => {
+              this.insert2Textarea(e.target, `[img](${ret.get('url')})`)
+            })
+            .finally((_) => {
+              document.body.style.opacity = 1
+            })
         }
       }
     }
   }
-}
+})()

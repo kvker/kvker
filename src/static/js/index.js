@@ -3,19 +3,10 @@ const app = new (class extends Base {
     super()
     this.ART_LIST = 'art_list'
     this.card_list = []
-    this.queryID('search_input').addEventListener(
-      'keypress',
-      this.inputKeypress.bind(this)
-    )
+    this.queryID('search_input').addEventListener('keypress', this.inputKeypress.bind(this))
     this.queryID('search_btn').addEventListener('click', this.search.bind(this))
-    this.queryID('refresh_btn').addEventListener(
-      'click',
-      this.refresh.bind(this)
-    )
-    this.queryID('add_btn').addEventListener(
-      'click',
-      this.clickAddArticle.bind(this)
-    )
+    this.queryID('refresh_btn').addEventListener('click', this.refresh.bind(this))
+    this.queryID('add_btn').addEventListener('click', this.clickAddArticle.bind(this))
     this.getList()
     if (this.user) {
       this.queryID('add_btn').style.display = 'inline'
@@ -43,6 +34,7 @@ const app = new (class extends Base {
     this.renderCardList(this.card_list)
   }
   async getCardList() {
+    this.loading()
     try {
       let ret = await av.read('Note', (q) => {
         q.descending('updatedAt')
@@ -50,11 +42,13 @@ const app = new (class extends Base {
         q.limit(1000)
       })
       if (ret) {
+        this.unloading()
         return ret.map((i) => i.toJSON())
       }
     } catch (error) {
       return []
     }
+    this.unloading()
   }
   listenLogin() {
     this.el.add_btn.style.display = 'inline'
@@ -75,12 +69,7 @@ const app = new (class extends Base {
     let val = this.query('#search_input').value
     let list = this.card_list
     if (val) {
-      list = this.card_list.filter(
-        (i) =>
-          i.title.includes(val) ||
-          (i.summary || '').includes(val) ||
-          i.content.includes(val)
-      )
+      list = this.card_list.filter((i) => i.title.includes(val) || (i.summary || '').includes(val) || i.content.includes(val))
     }
     if (list.length) {
       this.renderCardList(list)
