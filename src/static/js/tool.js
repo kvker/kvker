@@ -70,6 +70,11 @@ new (class Page extends Base {
         summary: 'iOS文件信息',
         link: 'tool/ios_file_information.html',
       },
+      {
+        name: 'scratch_card',
+        summary: '刮刮乐',
+        link: 'tool/scratch_card.html',
+      },
     ]
     this.renderList(this.tools)
   }
