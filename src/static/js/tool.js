@@ -65,6 +65,11 @@ new (class Page extends Base {
         summary: '计时器',
         link: 'huawei_quick/timer/',
       },
+      {
+        name: 'ios_file_information',
+        summary: 'iOS文件信息',
+        link: 'tool/ios_file_information.html',
+      },
     ]
     this.renderList(this.tools)
   }

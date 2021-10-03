@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>iOS File Info</title>
+  </head>
+  <body>
+    <input type="file" />
+    <pre></pre>
+    <script>
+      const input = document.querySelector('input')
+      const pre = document.querySelector('pre')
+      input.addEventListener('change', (e) => {
+        const file = e.target.files[0]
+        console.log(file)
+        pre.innerText = `
+          type: ${file.type}
+          size: ${file.size / 1024 / 1024 > 1 ? (file.size / 1024 / 1024).toFixed(2) + 'M' : (file.size / 1024).toFixed(2) + 'K'}
+          modi: ${new Date(file.lastModified).toLocaleString()}
+        `
+      })
+    </script>
+  </body>
+</html>
