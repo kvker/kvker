@@ -46,34 +46,44 @@ new (class Page extends Base {
         link: 'tool/markdowner/',
       },
       {
-        name: 'autopiano',
+        name: '自由钢琴',
         summary: '自由钢琴',
         link: 'huawei_quick/autopiano/',
       },
       {
-        name: 'god_tools',
+        name: '神的工具箱',
         summary: '神的工具箱',
         link: 'huawei_quick/god_tools/',
       },
       {
-        name: 'rubbish_category',
+        name: '垃圾分类',
         summary: '垃圾分类',
         link: 'huawei_quick/rubbish_category/',
       },
       {
-        name: 'timer',
+        name: '计时器',
         summary: '计时器',
         link: 'huawei_quick/timer/',
       },
       {
-        name: 'ios_file_information',
+        name: 'iOS文件信息',
         summary: 'iOS文件信息',
         link: 'tool/ios_file_information.html',
       },
       {
-        name: 'scratch_card',
+        name: '刮刮乐',
         summary: '刮刮乐',
         link: 'tool/scratch_card.html',
+      },
+      {
+        name: '打地鼠',
+        summary: '打地鼠',
+        link: 'tool/hamster.html',
+      },
+      {
+        name: '拼图',
+        summary: '拼图',
+        link: 'tool/puzzle.html',
       },
     ]
     this.renderList(this.tools)
