@@ -1,15 +1,12 @@
-let canvas, ctx, size, imageDataWhite, imageDataBlack
+'use strict'
 
-const page = new (class Page extends Base {
-  constructor() {
-    super()
-    this.resultUrl = ''
-    // 背景色开关
-    canvas = this.el.canvas
-    ctx = canvas.getContext('2d')
-  }
+!(function () {
+  let canvas, ctx, size, imageDataWhite, imageDataBlack
+  // 背景色开关
+  canvas = el.canvas
+  ctx = canvas.getContext('2d')
 
-  changeInput(e, type) {
+  window.changeInput = (e, type) => {
     let file = e.target.files[0]
     let reader = new FileReader()
     let img = new Image()
@@ -61,7 +58,7 @@ const page = new (class Page extends Base {
     }
   }
 
-  doMergeImage() {
+  window.doMergeImage = () => {
     let dw = imageDataWhite.data
     let db = imageDataBlack.data
     let length = Math.min(dw.length, db.length)
@@ -76,14 +73,14 @@ const page = new (class Page extends Base {
     }
     // console.log(db)
     ctx.putImageData(imageDataBlack, 0, 0)
-    this.el.switch_btn.style.display = 'inline'
+    el.switch_btn.style.display = 'inline'
   }
 
-  switchBG() {
-    if (this.el.canvas.style.backgroundColor === 'black') {
-      this.el.canvas.style.backgroundColor = 'white'
+  window.switchBG = () => {
+    if (el.canvas.style.backgroundColor === 'black') {
+      el.canvas.style.backgroundColor = 'white'
     } else {
-      this.el.canvas.style.backgroundColor = 'black'
+      el.canvas.style.backgroundColor = 'black'
     }
   }
 })()
