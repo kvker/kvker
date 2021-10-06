@@ -20,4 +20,12 @@
   window.$$ = (selector) => document.querySelectorAll(selector)
   window.loading = () => (document.body.style.opacity = 0.5)
   window.unloading = () => (document.body.style.opacity = 1)
+
+  window.user = av.currentUser()
+  window.userinfo = null
+
+  if (user) {
+    userinfo = user.toJSON()
+    el.account.innerText = userinfo.username
+  }
 })()

@@ -1,9 +1,6 @@
 'use strict'
 
 !(function () {
-  let user = av.currentUser(),
-    userinfo
-
   const ART_LIST = 'art_list'
   let card_list = []
   el.account.addEventListener('click', clickAccount)
@@ -16,8 +13,6 @@
 
   if (user) {
     el.add_btn.style.display = 'inline'
-    userinfo = user.toJSON()
-    el.account.innerText = userinfo.username
   }
   /**
    * 获取列表
