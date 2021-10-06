@@ -1,99 +1,133 @@
-const app = new (class extends Base {
-  constructor() {
-    super()
-    this.ART_LIST = 'art_list'
-    this.card_list = []
-    this.queryID('search_input').addEventListener('keypress', this.inputKeypress.bind(this))
-    this.queryID('search_btn').addEventListener('click', this.search.bind(this))
-    this.queryID('refresh_btn').addEventListener('click', this.refresh.bind(this))
-    this.queryID('add_btn').addEventListener('click', this.clickAddArticle.bind(this))
-    this.getList()
-    if (this.user) {
-      this.queryID('add_btn').style.display = 'inline'
-    }
+'use strict'
+
+!(function () {
+  let user = av.currentUser(),
+    userinfo
+
+  const ART_LIST = 'art_list'
+  let card_list = []
+  el.account.addEventListener('click', clickAccount)
+  el.search_input.addEventListener('keypress', inputKeypress)
+  el.search_btn.addEventListener('click', search)
+  el.refresh_btn.addEventListener('click', refresh)
+  el.add_btn.addEventListener('click', clickAddArticle)
+
+  getList()
+
+  if (user) {
+    el.add_btn.style.display = 'inline'
+    userinfo = user.toJSON()
+    el.account.innerText = userinfo.username
   }
   /**
    * 获取列表
    */
-  async getList() {
-    let local_list = JSON.parse(localStorage.getItem(this.ART_LIST))
+  function getList() {
+    let local_list = JSON.parse(localStorage.getItem(ART_LIST))
     if (local_list) {
-      this.card_list = local_list
-      this.renderCardList(this.card_list)
+      card_list = local_list
+      renderCardList(card_list)
     } else {
-      await this.refresh()
+      refresh()
     }
   }
+
   /**
    * 刷新列表
    */
-  async refresh() {
-    this.cleanCardList()
-    this.card_list = await this.getCardList()
-    localStorage.setItem(this.ART_LIST, JSON.stringify(this.card_list))
-    this.renderCardList(this.card_list)
+  function refresh() {
+    cleanCardList()
+    getCardList().then((ret) => {
+      card_list = ret
+      localStorage.setItem(ART_LIST, JSON.stringify(card_list))
+      renderCardList(card_list)
+    })
   }
-  async getCardList() {
-    this.loading()
-    try {
-      let ret = await av.read('Note', (q) => {
+
+  function getCardList() {
+    loading()
+    return av
+      .read('Note', (q) => {
         q.descending('updatedAt')
         q.select(['title', 'summary', 'content'])
         q.limit(1000)
       })
-      if (ret) {
-        this.unloading()
-        return ret.map((i) => i.toJSON())
+      .then((ret) => {
+        if (ret) {
+          unloading()
+          return ret.map((i) => i.toJSON())
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+        return []
+      })
+      .finally(unloading)
+  }
+
+  function clickAccount() {
+    if (user) {
+      el.account.removeEventListener('click', clickAccount)
+      av.logout().then((_) => {
+        account.innerText = '账号'
+        user = av.currentUser()
+        userinfo = null
+        listenLogout()
+      })
+    } else {
+      let username = prompt('请输入你的唯一id')
+      if (!username) {
+        return
       }
-    } catch (error) {
-      return []
+      av.login(username, '123456')
+        .then((ret) => {
+          user = ret
+          userinfo = user.toJSON()
+          el.account.innerText = userinfo.username
+          listenLogin()
+          el.account.addEventListener('click', clickAccount)
+        })
+        .catch(alert)
     }
-    this.unloading()
   }
-  listenLogin() {
-    this.el.add_btn.style.display = 'inline'
+
+  function listenLogin() {
+    el.add_btn.style.display = 'inline'
   }
-  listenLogout() {
-    this.el.add_btn.style.display = 'none'
+
+  function listenLogout() {
+    el.add_btn.style.display = 'none'
   }
-  clickAddArticle() {
+
+  function clickAddArticle() {
     location.href = `/art/edit.html`
   }
-  inputKeypress(e) {
+
+  function inputKeypress(e) {
     let code = e.keyCode
     if (code === 13) {
-      this.search()
+      search()
     }
   }
-  search() {
-    let val = this.query('#search_input').value
-    let list = this.card_list
+
+  function search() {
+    let val = el.search_input.value
+    let list = card_list
     if (val) {
-      list = this.card_list.filter((i) => i.title.includes(val) || (i.summary || '').includes(val) || i.content.includes(val))
+      list = card_list.filter((i) => i.title.includes(val) || (i.summary || '').includes(val) || i.content.includes(val))
     }
     if (list.length) {
-      this.renderCardList(list)
+      renderCardList(list)
     } else {
       open(`https://www.baidu.com/s?ie=utf-8&wd=${val}`)
     }
   }
-  cleanCardList() {
-    this.query('#card_list').innerHTML = ''
+
+  function cleanCardList() {
+    card_list.innerHTML = ''
   }
-  renderCardList(list) {
-    let html = ''
-    list.forEach((i) => {
-      html += `
-  <a class="link" href="/art/detail.html?id=${i.objectId}">${i.title}</a>
-  `
-    })
-    this.update(
-      {
-        card_list: {
-          html,
-        },
-      },
-      'replace'
-    )
+
+  function renderCardList(list) {
+    el.card_list.innerHTML = list.reduce((p, c) => (p += `<a class="link" href="/art/detail.html?id=${c.objectId}">${c.title}</a>`), '')
   }
 })()
