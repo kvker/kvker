@@ -4,6 +4,7 @@
   "description": "kvker个人笔记站",
   "scripts": {
     "dev": "anywhere -s -d src/ -p 18002",
+    "watch": "grunt watch",
     "build": "grunt"
   },
   "devDependencies": {
@@ -20,6 +21,7 @@
     "grunt-contrib-jshint": "^3.0.0",
     "grunt-contrib-nodeunit": "^3.0.0",
     "grunt-contrib-uglify": "^5.0.1",
-    "nodemon": "^2.0.7"
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-ejs": "^1.0.0"
   }
 }

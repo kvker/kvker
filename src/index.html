@@ -7,27 +7,40 @@
     <meta name="description" content="kvker个人的聚合搜索网站, 搜罗多多的网站" />
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="stylesheet" href="/static/css/custom.css" />
+    
     <link rel="stylesheet" href="/static/css/index.css" />
+    
   </head>
   <body>
-    <main class="relative">
-      <div style="position: sticky; top: 47px;">
-        <input id="search_input" placeholder="名称, 简述, 内容(没搜到则百度)" autofocus="" />
-        <button class="mr-10" id="search_btn">搜索</button>
-        <button class="mr-10" id="refresh_btn">刷新</button>
-        <button class="mr-10" id="add_btn" style="display: none">新增</button>
+    <nav class="flex jcsb top-nav">
+      <div class="nav-side"></div>
+      <div class="flex jcc aic">
+        <a class="nav-item" href="/">首页</a>
+        <a class="nav-item" href="/tool.html">工具</a>
       </div>
-      <div class="flex flex-wrap jcsb" id="card_list"></div>
-      <button class="scroll-button" onclick="javascript: document.documentElement.scrollTo(0, 0)">顶</button>
-      <button class="scroll-button bottom" onclick="javascript: document.documentElement.scrollTo(0, 1000000)">底</button>
-    </main>
-    <footer style="position: fixed; bottom: 0; right: 0"><a style="color: #333" href="http://www.beian.miit.gov.cn" target="_blank">浙ICP备19013783号-1</a></footer>
+      <div id="account" class="nav-side">账号</div>
+    </nav>
+  </body>
+</html>
 
-    <script src="/static/js/theme.js"></script>
+
+<main class="relative">
+  <div style="position: sticky; top: 47px;">
+    <input id="search_input" placeholder="名称, 简述, 内容(没搜到则百度)" autofocus="" />
+    <button class="mr-10" id="search_btn">搜索</button>
+    <button class="mr-10" id="refresh_btn">刷新</button>
+    <button class="mr-10" id="add_btn" style="display: none">新增</button>
+  </div>
+  <div class="flex flex-wrap jcsb" id="card_list"></div>
+  <button class="scroll-button" onclick="javascript: document.documentElement.scrollTo(0, 0)">顶</button>
+  <button class="scroll-button bottom" onclick="javascript: document.documentElement.scrollTo(0, 1000000)">底</button>
+</main>
+<footer style="position: fixed; bottom: 0; right: 0"><a style="color: #333" href="http://www.beian.miit.gov.cn" target="_blank">浙ICP备19013783号-1</a></footer>
+
+<script defer src="/static/js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
     <script src="/static/js/av.js"></script>
     <script src="/static/js/kk.js"></script>
     <script src="/static/js/base.js"></script>
-    <script src="/static/js/index.js"></script>
   </body>
 </html>

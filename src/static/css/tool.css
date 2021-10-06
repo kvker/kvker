@@ -1,0 +1,29 @@
+.card {
+  width: 30%;
+  min-height: 100px;
+  border: var(--main_border);
+  border-radius: var(--main_radius);
+  padding: var(--main_gap);
+  margin: var(--main_gap) 0;
+}
+
+.card-title {
+  text-align: center;
+}
+
+.card-summary {
+  margin-top: var(--main_gap);
+}
+
+@media screen and (max-width: 968px) {
+  .card {
+    width: 100%;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .card-title,
+  .card-summary {
+    color: #fff;
+  }
+}
