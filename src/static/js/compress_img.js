@@ -1,24 +1,10 @@
-let result_url
-const page = new (class Page extends Base {
-  constructor() {
-    super()
-  }
+'use strict'
 
-  get result_url() {
-    return result_url
-  }
+!(function () {
+  let result_url
 
-  set result_url(val) {
-    this.update({
-      img: {
-        src: val,
-      },
-    })
-    result_url = val
-  }
-
-  changeInput(e) {
-    this.el.download.style.display = 'none'
+  window.changeInput = (e) => {
+    el.download.style.display = 'none'
     // 压缩图片需要的一些元素和对象
     let reader = new FileReader()
     //创建一个img对象
@@ -29,7 +15,7 @@ const page = new (class Page extends Base {
 
     // 选择的文件对象
     let file = e.target.files[0]
-    console.log(file.size)
+    console.log('原图尺寸: ', file.size)
     reader.readAsDataURL(file)
     // 文件base64化，以便获知图片原始尺寸
     reader.onload = (e) => {
@@ -48,15 +34,13 @@ const page = new (class Page extends Base {
       canvas.height = height
       ctx.clearRect(0, 0, width, height)
       ctx.drawImage(img, 0, 0, width, height)
-      this.result_url = canvas.toDataURL('image/jpeg', 0.92)
-      // console.log(this.result_url.length * 0.75)
-      this.el.download.style.display = 'block'
-      this.update({
-        download: {
-          href: this.result_url,
-          download: '图片',
-        },
-      })
+      result_url = canvas.toDataURL('image/jpeg', 0.92)
+      el.img.src = result_url
+      console.log('压缩后图片尺寸: ', result_url.length)
+      // console.log(result_url.length * 0.75)
+      el.download.style.display = 'block'
+      el.download.href = result_url
+      el.download.download = '图片.png'
     }
   }
 })()
