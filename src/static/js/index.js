@@ -92,6 +92,7 @@
 
   function listenLogout() {
     el.add_btn.style.display = 'none'
+    el.account.addEventListener('click', clickAccount)
   }
 
   function clickAddArticle() {
