@@ -1,0 +1,14 @@
+<%- include('../common/header', {links: []}) %>
+
+<main class="flex jcc aic">
+  <input id="input" type="file" onchange="page.changeInput(event)" accept="image/gif" />
+  <img id="img" style="display: none" alt="img" rel:auto_play="1" rel:rubbable="1" />
+  <canvas id="canvas" style="position: absolute; left: -10000px"></canvas>
+  <img id="result" src="#" />
+</main>
+
+<script defer src="https://file.kvker.com/40f8661ba4beedf0af2e/gif.js"></script>
+<script defer src="https://file.kvker.com/59749c31f141f688a9f4/libgif.js"></script>
+<script defer src="/static/js/reverse_gif.js"></script>
+
+<%- include('../common/footer') %>

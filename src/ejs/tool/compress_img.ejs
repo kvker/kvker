@@ -1,0 +1,15 @@
+<%- include('../common/header', {links: []}) %>
+
+<main>
+  <div class="flex-c jcc aic">
+    <input id="input" type="file" onchange="page.changeInput(event)" accept="image/*" />
+    <a id="download" style="display: none; margin-top: var(--main_gap)" href="#" download>
+      <p>点击图片下载</p>
+      <img id="img" class="preview" src="#" alt="img" />
+    </a>
+  </div>
+</main>
+
+<script defer src="/static/js/compress_img.js"></script>
+
+<%- include('../common/footer') %>

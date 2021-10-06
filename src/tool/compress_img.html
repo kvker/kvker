@@ -1,39 +1,40 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-    <title>kvker的个人网站</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta charset="utf-8" />
+    <title>kvker个人站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="kvker个人的聚合搜索网站, 搜罗多多的网站" />
-    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="shortcut icon" href="favicon.ico" />
     <link rel="stylesheet" href="/static/css/custom.css" />
-
-    <style>
-      .compress {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-    </style>
+    
   </head>
-
   <body>
-    <main>
-      <div class="compress">
-        <input id="input" type="file" onchange="page.changeInput(event)" accept="image/*" />
-        <a id="download" style="display: none; margin-top: var(--main_gap)" href="#" download>
-          <p>点击图片下载</p>
-          <img id="img" class="preview" src="#" alt="img" />
-        </a>
+    <nav class="flex jcsb top-nav">
+      <div class="nav-side"></div>
+      <div class="flex jcc aic">
+        <a class="nav-item" href="/">首页</a>
+        <a class="nav-item" href="/tool.html">工具</a>
       </div>
-    </main>
+      <div id="account" class="nav-side">账号</div>
+    </nav>
 
-    <script src="/static/js/theme.js"></script>
+
+<main>
+  <div class="flex-c jcc aic">
+    <input id="input" type="file" onchange="page.changeInput(event)" accept="image/*" />
+    <a id="download" style="display: none; margin-top: var(--main_gap)" href="#" download>
+      <p>点击图片下载</p>
+      <img id="img" class="preview" src="#" alt="img" />
+    </a>
+  </div>
+</main>
+
+<script defer src="/static/js/compress_img.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
     <script src="/static/js/av.js"></script>
     <script src="/static/js/kk.js"></script>
     <script src="/static/js/base.js"></script>
-    <script src="/static/js/compress_img.js"></script>
   </body>
 </html>
