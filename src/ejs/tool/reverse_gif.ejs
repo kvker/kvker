@@ -1,10 +1,10 @@
 <%- include('../common/header', {links: []}) %>
 
 <main class="flex jcc aic">
-  <input id="input" type="file" onchange="page.changeInput(event)" accept="image/gif" />
+  <input id="input" type="file" onchange="changeInput(event)" accept="image/gif" />
   <img id="img" style="display: none" alt="img" rel:auto_play="1" rel:rubbable="1" />
   <canvas id="canvas" style="position: absolute; left: -10000px"></canvas>
-  <img id="result" src="#" />
+  <img id="result" src="#" alt="请选gif" />
 </main>
 
 <script defer src="https://file.kvker.com/40f8661ba4beedf0af2e/gif.js"></script>

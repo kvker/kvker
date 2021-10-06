@@ -1,16 +1,13 @@
-let canvas, ctx, input, gif
+'use strict'
 
-const page = new (class Page extends Base {
-  constructor() {
-    super()
-    this.img_url = ''
-    this.result_url = ''
-    canvas = this.el.canvas
-    ctx = canvas.getContext('2d')
-    input = this.el.input
-  }
+!(function () {
+  let canvas, ctx, input, gif
+  let result_url = ''
+  canvas = el.canvas
+  ctx = canvas.getContext('2d')
+  input = el.input
 
-  changeInput(e) {
+  window.changeInput = (e) => {
     let file = e.target.files[0]
     if (!file) {
       return
@@ -19,12 +16,12 @@ const page = new (class Page extends Base {
     reader.readAsDataURL(file)
     reader.onload = (e) => {
       let src = e.target.result
-      this.createImg(src)
+      createImg(src)
     }
   }
 
-  createImg(src) {
-    let img = this.el.img
+  function createImg(src) {
+    let img = el.img
     img.src = src
     img.onload = (e) => {
       img.style.display = 'inline'
@@ -45,7 +42,7 @@ const page = new (class Page extends Base {
         for (let i = 0; i < rub.get_length(); i++) {
           // 遍历gif实例的每一帧
           rub.move_to(i)
-          let cur_file = this.convertCanvasToImage(rub.get_canvas(), 'new' + i)
+          let cur_file = convertCanvasToImage(rub.get_canvas(), 'new' + i)
           img_list.push({
             file_name: cur_file.name,
             url: URL.createObjectURL(cur_file),
@@ -63,7 +60,7 @@ const page = new (class Page extends Base {
           tmp_img.onload = () => {
             count++
             if (count === img_list.length) {
-              this.generateGif(img_obj_list)
+              generateGif(img_obj_list)
             }
           }
         }
@@ -74,19 +71,15 @@ const page = new (class Page extends Base {
         let file = new FileReader()
         file.readAsDataURL(blob)
         file.onload = () => {
-          this.result_url = file.result
-          this.update({
-            result: {
-              src: file.result,
-            },
-          })
-          this.el.input.style.display = 'none'
+          result_url = file.result
+          el.result.src = file.result
+          el.input.style.display = 'none'
         }
       })
     }
   }
 
-  generateGif(img_obj_list) {
+  function generateGif(img_obj_list) {
     for (let i = 0; i < img_obj_list.length; i++) {
       ctx.save()
       ctx.drawImage(img_obj_list[i], 0, 0, canvas.width, canvas.height)
@@ -94,7 +87,7 @@ const page = new (class Page extends Base {
       gif.addFrame(canvas, { copy: true, delay: 100 })
       ctx.clearRect(0, 0, canvas.width, canvas.height)
     }
-    // this.showToast({ content: '装载中，稍等...' })
+
     let p = document.createElement('p')
     p.innerText = '装载中，稍等...'
     document.body.insertAdjacentElement('beforeend', p)
@@ -105,7 +98,7 @@ const page = new (class Page extends Base {
   }
 
   // 路径转文件
-  dataURLtoFile(dataurl, filename) {
+  function dataURLtoFile(dataurl, filename) {
     let arr = dataurl.split(',')
     let mime = arr[0].match(/:(.*?);/)[1]
     let bstr = atob(arr[1])
@@ -118,7 +111,7 @@ const page = new (class Page extends Base {
   }
 
   // 将canvas转换成file对象
-  convertCanvasToImage(canvas, filename) {
-    return this.dataURLtoFile(canvas.toDataURL('image/png'), filename)
+  function convertCanvasToImage(canvas, filename) {
+    return dataURLtoFile(canvas.toDataURL('image/png'), filename)
   }
 })()

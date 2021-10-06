@@ -21,10 +21,10 @@
 
 
 <main class="flex jcc aic">
-  <input id="input" type="file" onchange="page.changeInput(event)" accept="image/gif" />
+  <input id="input" type="file" onchange="changeInput(event)" accept="image/gif" />
   <img id="img" style="display: none" alt="img" rel:auto_play="1" rel:rubbable="1" />
   <canvas id="canvas" style="position: absolute; left: -10000px"></canvas>
-  <img id="result" src="#" />
+  <img id="result" src="#" alt="请选gif" />
 </main>
 
 <script defer src="https://file.kvker.com/40f8661ba4beedf0af2e/gif.js"></script>
@@ -33,8 +33,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
     <script src="/static/js/av.js"></script>
-    <script src="/static/js/kk.js"></script>
-    <script src="/static/js/base.js"></script>
     <script src="/static/js/main.js"></script>
   </body>
 </html>
