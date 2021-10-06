@@ -6,17 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="kvker个人的聚合搜索网站, 搜罗多多的网站" />
     <link rel="shortcut icon" href="favicon.ico" />
-    <link rel="stylesheet" href="/static/css/custom.css" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
     
+    <style>
+      .container {
+        padding: 0;
+      }
+      .row {
+        margin: 0;
+      }
+    </style>
   </head>
-  <body>
-    <nav class="flex jcsb top-nav">
-      <div class="nav-side"></div>
-      <div class="flex jcc aic">
-        <a class="nav-item" href="/">首页</a>
-        <a class="nav-item" href="/tool.html">工具</a>
-      </div>
-      <div id="account" class="nav-side">账号</div>
+  <body class="container">
+    <nav class="navbar navbar-expand bg-dark navbar-dark sticky-top">
+      <ul class="navbar-nav justify-content-between w-100">
+        <li class="nav-item d-flex">
+          <a class="nav-link" href="/">首页</a>
+          <a class="nav-link" href="/tool.html">工具</a>
+        </li>
+        <li class="nav-item">
+          <a id="account" class="nav-link" href="#">账号</a>
+        </li>
+      </ul>
     </nav>
 
 
@@ -31,6 +42,9 @@
 <script defer src="https://file.kvker.com/59749c31f141f688a9f4/libgif.js"></script>
 <script defer src="/static/js/reverse_gif.js"></script>
 
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
     <script src="/static/js/av.js"></script>
     <script src="/static/js/main.js"></script>

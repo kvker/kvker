@@ -90,10 +90,12 @@
   el.list.innerHTML = tools.reduce(
     (p, c) =>
       (p += `
-        <a class="card" href="${c.link}">
-          <h2 class="card-title">${c.name}</h2>
-          <p class="card-summary">${c.summary}</p>
-        </a>
+        <div class="card text-info mt-2">
+          <div class="card-body">
+            <a class="card-title" href="${c.link}">${c.name}</a>
+            <p class="card-text">${c.summary}</p>
+          </div>
+        </div>
       `),
     ''
   )
