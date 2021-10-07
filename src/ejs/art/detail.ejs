@@ -1,0 +1,32 @@
+<%- include('../common/header', {links: [`https://cdn.staticfile.org/highlight.js/10.0.0/styles/default.min.css`]}) %>
+
+<style>
+  main {
+    padding: 20px;
+  }
+
+  pre {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+
+    #delete_btn,
+    #edit_btn {
+      color: #fff;
+    }
+  }
+</style>
+
+<main class="flex-column aic">
+  <h1 id="title"></h1>
+  <pre id="markdown"></pre>
+  <div id="ctrls_box" style="display: none;">
+    <button id="edit_btn" style="padding: 4px 8px;">编辑</button>
+    <button id="delete_btn" style="padding: 4px 8px;">删除</button>
+  </div>
+</main>
+
+<script defer src="/static/js/detail.js"></script>
+<%- include('../common/footer', {scripts: [`https://cdn.staticfile.org/marked/1.20/marked.min.js`, `https://cdn.staticfile.org/highlight.js/10.1.2/highlight.min.js`]}) %>

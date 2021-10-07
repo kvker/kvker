@@ -7,9 +7,11 @@
     <meta name="description" content="kvker个人的聚合搜索网站, 搜罗多多的网站" />
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
-    <% links.forEach(function(link) { %>
-    <link rel="stylesheet" href="<%= link %>" />
-    <% }) %>
+    <% if (typeof links !== 'undefined') { %>
+      <% links.forEach(function(link) { %>
+      <link rel="stylesheet" href="<%= link %>" />
+      <% }) %>
+    <% } %>
     <style>
       .container {
         padding: 0;
