@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "kvker个人笔记站",
   "scripts": {
+    "electron": "electron src/",
     "dev": "anywhere -s -d src/ -p 18002",
     "watch": "grunt watch",
     "build": "grunt"
@@ -13,6 +14,7 @@
     "@babel/plugin-transform-spread": "^7.13.0",
     "@babel/preset-env": "^7.14.1",
     "anywhere": "^1.5.0",
+    "electron": "^15.1.1",
     "grunt": "^1.4.0",
     "grunt-cli": "^1.4.2",
     "grunt-contrib-copy": "^1.0.0",
