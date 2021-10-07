@@ -24,6 +24,8 @@
   window.user = av.currentUser()
   window.userinfo = null
 
+  window.searchParams = new URL(location.href).searchParams
+
   if (user) {
     userinfo = user.toJSON()
     el.account.innerText = userinfo.username
