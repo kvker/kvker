@@ -24,6 +24,13 @@
   window.user = av.currentUser()
   window.userinfo = null
 
+  window.is_electron = navigator.userAgent.includes('Electron')
+
+  if(!is_electron) {
+    el.account.style.display = 'block'
+    el.footer.style.display = 'block'
+  }
+
   window.searchParams = new URL(location.href).searchParams
 
   if (user) {
