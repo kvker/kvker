@@ -20,7 +20,7 @@
     {
       name: '百度网盘搜索',
       summary: '聚合网盘内容搜索',
-      link: 'tool/bd_search.html',
+      link: 'tool-bd_search.html',
     },
     {
       name: '计时器',
