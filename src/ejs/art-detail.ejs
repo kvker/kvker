@@ -1,4 +1,4 @@
-<%- include('../common/header', {links: [`https://cdn.staticfile.org/highlight.js/10.0.0/styles/default.min.css`]}) %>
+<%- include('common/header', {links: [`https://cdn.staticfile.org/highlight.js/10.0.0/styles/default.min.css`]}) %>
 
 <main class="flex-column aic">
   <h1 id="title" class="my-4"></h1>
@@ -9,5 +9,5 @@
   </div>
 </main>
 
-<script defer src="/static/js/detail.js"></script>
-<%- include('../common/footer', {scripts: [`https://cdn.staticfile.org/marked/1.20/marked.min.js`, `https://cdn.staticfile.org/highlight.js/10.1.2/highlight.min.js`]}) %>
+<script defer src="static/js/art-detail.js"></script>
+<%- include('common/footer', {scripts: [`https://cdn.staticfile.org/marked/1.20/marked.min.js`, `https://cdn.staticfile.org/highlight.js/10.1.2/highlight.min.js`]}) %>

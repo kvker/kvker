@@ -96,7 +96,7 @@
   }
 
   function clickAddArticle() {
-    location.href = `/art/edit.html`
+    location.href = `art-edit.html`
   }
 
   function inputKeypress(e) {
@@ -127,7 +127,7 @@
     el.card_list.innerHTML = list.reduce((p, c) => (p += `
     <div class="card pb-2 pt-2 mb-2">
       <div class="card-body">
-        <a class="text-info card-link" href="/art/detail.html?id=${c.objectId}">${c.title}</a>
+        <a class="text-info card-link" href="art-detail.html?id=${c.objectId}">${c.title}</a>
       </div>
     </div>
     `), '')

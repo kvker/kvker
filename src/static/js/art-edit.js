@@ -54,7 +54,7 @@ function clickComplete() {
       })
         .then(() => {
           alert('创建成功')
-          location.replace('/')
+          location.replace('index.html')
         })
         .finally(unloading)
     }

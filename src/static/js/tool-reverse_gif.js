@@ -34,7 +34,7 @@
       gif = new GIF({
         workers: 2,
         quality: 30,
-        workerScript: '/static/libs/gif.worker.js',
+        workerScript: 'static/libs/gif.worker.js',
       })
 
       // rub 挂载gif图片完成

@@ -14,7 +14,7 @@
   })
 
   let id = searchParams.get('id')
-  el.edit_btn.addEventListener('click', () => (location.href = `edit.html?id=${id}`))
+  el.edit_btn.addEventListener('click', () => (location.href = `art-edit.html?id=${id}`))
   el.delete_btn.addEventListener('click', clickDelete)
   if (userinfo) {
     el.ctrls_box.style.display = 'block'
@@ -53,7 +53,7 @@
     if (confirm('确定删除吗?') && user) {
       av.delete('Note', id).then((ret) => {
         alert('删除成功')
-        location.replace('/')
+        location.replace('index.html')
       })
     }
   }
