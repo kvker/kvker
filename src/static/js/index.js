@@ -1,6 +1,10 @@
 'use strict'
 
 !(function () {
+  if(!is_electron) {
+    el.footer.style.display = 'block'
+  }
+
   const ART_LIST = 'art_list'
   let card_list = []
   el.account.addEventListener('click', clickAccount)

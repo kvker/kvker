@@ -28,7 +28,6 @@
 
   if(!is_electron) {
     el.account.style.display = 'block'
-    el.footer.style.display = 'block'
   }
 
   window.searchParams = new URL(location.href).searchParams

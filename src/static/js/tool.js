@@ -32,17 +32,22 @@
       summary: '刮刮乐',
       link: 'tool-scratch_card.html',
     },
-    {
-      name: '打地鼠',
-      summary: '打地鼠',
-      link: 'tool-hamster.html',
-    },
-    {
-      name: '拼图',
-      summary: '拼图',
-      link: 'tool-puzzle.html',
-    },
   ]
+
+  if (!is_electron) {
+    tools.push(
+      {
+        name: '打地鼠',
+        summary: '打地鼠',
+        link: 'tool-hamster.html',
+      },
+      {
+        name: '拼图',
+        summary: '拼图',
+        link: 'tool-puzzle.html',
+      }
+    )
+  }
 
   el.list.innerHTML = tools.reduce(
     (p, c) =>
