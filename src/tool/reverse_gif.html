@@ -17,21 +17,23 @@
       }
     </style>
   </head>
-  <body class="container">
-    <nav class="navbar navbar-expand bg-dark navbar-dark sticky-top">
-      <ul class="navbar-nav justify-content-between w-100">
-        <li class="nav-item d-flex">
-          <a class="nav-link" href="/">首页</a>
-          <a class="nav-link" href="/tool.html">工具</a>
-        </li>
-        <li class="nav-item">
-          <a id="account" class="nav-link" href="#">账号</a>
-        </li>
-      </ul>
-    </nav>
+  <body>
+    <div class="container-fluid bg-light sticky-top">
+      <nav class="container navbar navbar-expand navbar-light">
+        <ul class="navbar-nav justify-content-between w-100">
+          <li class="nav-item d-flex">
+            <a class="nav-link" href="/">首页</a>
+            <a class="nav-link" href="/tool.html">工具</a>
+          </li>
+          <li class="nav-item">
+            <a id="account" class="nav-link" href="#">账号</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
 
 
-<main class="flex jcc aic">
+<main class="container flex jcc aic">
   <input id="input" type="file" onchange="changeInput(event)" accept="image/gif" />
   <img id="img" style="display: none" alt="img" rel:auto_play="1" rel:rubbable="1" />
   <canvas id="canvas" style="position: absolute; left: -10000px"></canvas>
