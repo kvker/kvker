@@ -34,39 +34,16 @@
       </ul>
     </nav>
 
-  <style>
-    main {
-      padding: 20px;
-    }
 
-    #title,
-    #content {
-      width: 100%;
-      max-width: 800px;
-    }
+<main class="d-flex flex-column align-items-center">
+  <input id="title" class="w-100 mt-4" placeholder="标题">
+  <textarea id="content" class="w-100 my-4" style="height: 60vh;resize: none;" placeholder="正文: markdown语法" ondrop="dropTextarea(event)"
+    onkeydown="keydownTextarea(event)" onpaste="pasteTextarea(event)"></textarea>
+  <button id="complete_btn" class="btn btn-primary w-25" style="padding: 4px 8px;">完成</button>
+</main>
 
-    #content {
-      margin: 20px 0;
-      height: 400px;
-      overflow-x: hidden;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      #complete_btn {
-        color: #fff;
-      }
-    }
-  </style>
-
-  <main class="flex-column aic">
-    <input id="title" placeholder="标题">
-    <textarea id="content" placeholder="正文: markdown语法" ondrop="app.dropTextarea(event)"
-      onkeydown="app.keydownTextarea(event)" onpaste="app.pasteTextarea(event)"></textarea>
-    <button id="complete_btn" style="padding: 4px 8px;">完成</button>
-  </main>
-
-  <script defer src="/static/js/edit.js"></script>
-      
+<script defer src="/static/js/edit.js"></script>
+    
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>

@@ -1,119 +1,118 @@
-const app = new (class extends Base {
-  constructor() {
-    super()
-    document.addEventListener('dragover', (e) => {
-      e.preventDefault()
+document.addEventListener('dragover', (e) => {
+  e.preventDefault()
+})
+
+document.addEventListener('drop', (e) => {
+  e.preventDefault()
+})
+
+el.complete_btn.addEventListener('click', clickComplete)
+id = searchParams.get('id')
+if (id) {
+  loading()
+  av.read('Note', (q) => {
+    q.equalTo('objectId', id)
+  })
+    .then((ret) => {
+      let item = ret[0]
+      el.title.value = item.get('title')
+      el.content.value = item.get('content')
     })
-    document.addEventListener('drop', (e) => {
-      e.preventDefault()
+    .catch((error) => {
+      console.error(error)
+      alert(error.message)
     })
-    this.el.complete_btn.addEventListener('click', this.clickComplete.bind(this))
-    this.id = this.query_params.id
-    if (this.id) {
-      this.loading()
-      av.read('Note', (q) => {
-        q.equalTo('objectId', this.id)
+    .finally(unloading)
+}
+
+function listenLogin() {
+  el.complete_btn.style.display = 'inline'
+}
+
+function listenLogout() {
+  el.complete_btn.style.display = 'none'
+}
+
+function clickComplete() {
+  document.body.style.opacity = 0.5
+  if (user) {
+    loading()
+    if (id) {
+      av.update('Note', id, {
+        title: el.title.value,
+        content: el.content.value,
       })
         .then((ret) => {
-          let item = ret[0]
-          this.update({
-            title: item.get('title'),
-            content: item.get('content'),
-          })
-        })
-        .catch((error) => {
-          console.error(error)
-          alert(error.message)
-        }).finally(this.unloading)
-    }
-  }
-
-  listenLogin() {
-    this.el.complete_btn.style.display = 'inline'
-  }
-
-  listenLogout() {
-    this.el.complete_btn.style.display = 'none'
-  }
-
-  clickComplete() {
-    // console.log(this)
-    document.body.style.opacity = 0.5
-    if (this.user) {
-      this.loading()
-      if (this.id) {
-        av.update('Note', this.id, {
-          title: this.el.title.value,
-          content: this.el.content.value,
-        }).then((ret) => {
           alert('更新成功')
           location.replace('/')
-        }).finally(this.unloading)
-      } else {
-        av.create('Note', {
-          title: this.el.title.value,
-          content: this.el.content.value,
-        }).then((ret) => {
+        })
+        .finally(unloading)
+    } else {
+      av.create('Note', {
+        title: el.title.value,
+        content: el.content.value,
+      })
+        .then(() => {
           alert('创建成功')
           location.replace('/')
-        }).finally(this.unloading)
-      }
-    } else {
-      alert('未登录')
+        })
+        .finally(unloading)
     }
+  } else {
+    alert('未登录')
   }
+}
 
-  dropTextarea(e) {
-    let files = e.dataTransfer.files
-    let file = files[0]
-    let file_reader = new FileReader()
+function dropTextarea(e) {
+  let files = e.dataTransfer.files
+  let file = files[0]
+  let file_reader = new FileReader()
 
-    file_reader.readAsDataURL(file)
-    file_reader.onload = () => {
-      av.upload(file_reader.result).then((ret) => {
-        this.insert2Textarea(e.target, `[img](${ret.get('url')})`)
-      })
-    }
+  file_reader.readAsDataURL(file)
+  file_reader.onload = () => {
+    av.upload(file_reader.result).then((ret) => {
+      insert2Textarea(e.target, `[img](${ret.get('url')})`)
+    })
   }
+}
 
-  keydownTextarea(e) {
-    let key_code = e.keyCode
-    if (key_code === 9) {
+function keydownTextarea(e) {
+  let key_code = e.keyCode
+  if (key_code === 9) {
+    e.preventDefault()
+    insert2Textarea(e.target, '  ')
+  }
+}
+
+function insert2Textarea(textarea, str) {
+  let selection_start = textarea.selectionStart
+  let value = textarea.value
+  value = value.slice(0, selection_start) + str + value.slice(selection_start)
+  textarea.value = value
+  textarea.selectionStart = textarea.selectionEnd = selection_start + str.length
+}
+
+function pasteTextarea(e) {
+  let items = e.clipboardData.items
+  for (let i = 0; i < items.length; i++) {
+    let item = items[i]
+    if (item.type.includes('image')) {
+      document.body.style.opacity = 0.5
       e.preventDefault()
-      this.insert2Textarea(e.target, '  ')
-    }
-  }
-
-  insert2Textarea(textarea, str) {
-    let selection_start = textarea.selectionStart
-    let value = textarea.value
-    value = value.slice(0, selection_start) + str + value.slice(selection_start)
-    textarea.value = value
-    textarea.selectionStart = textarea.selectionEnd = selection_start + str.length
-  }
-
-  pasteTextarea(e) {
-    let items = e.clipboardData.items
-    for (let i = 0; i < items.length; i++) {
       let item = items[i]
-      if (item.type.includes('image')) {
-        document.body.style.opacity = 0.5
-        e.preventDefault()
-        let item = items[i]
-        let file = item.getAsFile()
-        let file_reader = new FileReader()
+      let file = item.getAsFile()
+      let file_reader = new FileReader()
 
-        file_reader.readAsDataURL(file)
-        file_reader.onload = () => {
-          av.upload(file_reader.result)
-            .then((ret) => {
-              this.insert2Textarea(e.target, `[img](${ret.get('url')})`)
-            })
-            .finally((_) => {
-              document.body.style.opacity = 1
-            })
-        }
+      file_reader.readAsDataURL(file)
+      file_reader.onload = () => {
+        av.upload(file_reader.result)
+          .then((ret) => {
+            insert2Textarea(e.target, `[img](${ret.get('url')})`)
+          })
+          .finally((_) => {
+            document.body.style.opacity = 1
+          })
       }
     }
   }
-})()
+}
