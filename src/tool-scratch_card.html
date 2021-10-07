@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>kvker个人站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="kvker个人的聚合搜索网站, 搜罗多多的网站" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="static/css/custom.css">
+    
+    <style>
+      .container {
+        padding: 0;
+      }
+      .row {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid bg-light sticky-top">
+      <nav class="container navbar navbar-expand navbar-light">
+        <ul class="navbar-nav justify-content-between w-100">
+          <li class="nav-item d-flex">
+            <a class="nav-link" href="index.html">首页</a>
+            <a class="nav-link" href="tool.html">工具</a>
+          </li>
+          <li class="nav-item">
+            <a id="account" class="nav-link" href="#">账号</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+
+<div class="container">
+  <button onclick="location.reload()">Click Me and Again</button>
+  <canvas id="canvas" width="320" height="160"></canvas>
+</div>
+
+<script>
+  let w = 320
+  let h = 160
+  let canvas = document.getElementById('canvas')
+  let imgs = ['p_0.jpg', 'p_1.jpg']
+  let num = Math.floor(Math.random() * 2)
+
+  canvas.style.backgroundImage = 'url(static/img/' + imgs[num] + ')'
+  canvas.width = w
+  canvas.height = h
+
+  let ctx = canvas.getContext('2d')
+  ctx.fillStyle = 'gray'
+  ctx.fillRect(0, 0, w, h)
+  ctx.globalCompositeOperation = 'destination-out' // 只显示旧图形中与新图形不重叠部分，其他部分作透明处理
+
+  // 计算偏移量
+  let offsetX = canvas.offsetLeft
+  let offsetY = canvas.offsetTop
+  let mousedown = false
+
+  function eventDown(e) {
+    e.preventDefault()
+    mousedown = true
+  }
+
+  function eventUp(e) {
+    e.preventDefault()
+    mousedown = false
+  }
+
+  function eventMove(e) {
+    e.preventDefault()
+    let changedTouches = e.changedTouches
+    if (mousedown) {
+      if (changedTouches) {
+        e = changedTouches[changedTouches.length - 1]
+      }
+      let x = (e.clientX + document.body.scrollLeft || e.pageX) - offsetX || 0,
+        y = (e.clientY + document.body.scrollTop || e.pageY) - offsetY || 0
+      ctx.beginPath()
+      ctx.arc(x, y, 20, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  }
+
+  canvas.addEventListener('touchstart', eventDown)
+  canvas.addEventListener('touchend', eventUp)
+  canvas.addEventListener('touchmove', eventMove)
+  canvas.addEventListener('mousedown', eventDown)
+  canvas.addEventListener('mouseup', eventUp)
+  canvas.addEventListener('mousemove', eventMove)
+
+  // 加载图片主要是为了获取尺寸,写死就不必了
+  // let img = new Image()
+  // img.src = 'assets/' + imgs[num]
+  // img.addEventListener('load', function() {
+  // })
+</script>
+
+    
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
+    <script src="static/libs/av.js"></script>
+    <script src="static/libs/main.js"></script>
+  </body>
+</html>

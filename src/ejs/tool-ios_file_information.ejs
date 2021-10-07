@@ -1,0 +1,22 @@
+<%- include('common/header') %>
+
+<main class="container">
+  <input type="file" />
+  <pre></pre>
+</main>
+
+<script>
+  const input = document.querySelector('input')
+  const pre = document.querySelector('pre')
+  input.addEventListener('change', (e) => {
+    const file = e.target.files[0]
+    console.log(file)
+    pre.innerText = `
+      type: ${file.type}
+      size: ${file.size / 1024 / 1024 > 1 ? (file.size / 1024 / 1024).toFixed(2) + 'M' : (file.size / 1024).toFixed(2) + 'K'}
+      modi: ${new Date(file.lastModified).toLocaleString()}
+    `
+  })
+</script>
+
+<%- include('common/footer') %>

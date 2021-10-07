@@ -23,29 +23,24 @@
       link: 'tool-bd_search.html',
     },
     {
-      name: '计时器',
-      summary: '计时器',
-      link: 'huawei_quick/timer/',
-    },
-    {
       name: 'iOS文件信息',
       summary: 'iOS文件信息',
-      link: 'tool/ios_file_information.html',
+      link: 'tool-ios_file_information.html',
     },
     {
       name: '刮刮乐',
       summary: '刮刮乐',
-      link: 'tool/scratch_card.html',
+      link: 'tool-scratch_card.html',
     },
     {
       name: '打地鼠',
       summary: '打地鼠',
-      link: 'tool/hamster.html',
+      link: 'tool-hamster.html',
     },
     {
       name: '拼图',
       summary: '拼图',
-      link: 'tool/puzzle.html',
+      link: 'tool-puzzle.html',
     },
   ]
 
