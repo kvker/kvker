@@ -2,29 +2,18 @@
   "name": "website",
   "version": "1.0.0",
   "description": "kvker个人笔记站",
-  "main": "src/main.js",
   "author": "kvker",
   "scripts": {
-    "electron": "electron src/",
     "dev": "anywhere -s -d src/ -p 18002",
     "watch": "grunt watch",
-    "build": "grunt",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "build": "grunt"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/plugin-transform-runtime": "^7.13.15",
     "@babel/plugin-transform-spread": "^7.13.0",
     "@babel/preset-env": "^7.14.1",
-    "@electron-forge/cli": "^6.0.0-beta.61",
-    "@electron-forge/maker-deb": "^6.0.0-beta.61",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.61",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
-    "@electron-forge/maker-zip": "^6.0.0-beta.61",
     "anywhere": "^1.5.0",
-    "electron": "^15.1.1",
     "grunt": "^1.4.0",
     "grunt-cli": "^1.4.2",
     "grunt-contrib-copy": "^1.0.0",
@@ -35,18 +24,5 @@
     "grunt-contrib-uglify": "^5.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-ejs": "^1.0.0"
-  },
-  "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-zip"
-        }
-      ]
-    }
   }
 }
