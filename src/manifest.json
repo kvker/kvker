@@ -5,11 +5,27 @@
   "start_url": "index.html",
   "theme_color": "white",
   "background_color": "white",
+  "description": "我的个人笔记集合",
+  "author": "杭州市滨江区乌斑兔软件设计工作室",
+  "developer": "kvker",
+  "lang": "zh-CN",
+  "scope": "/",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "static/img/logo.png",
       "sizes": "512x512",
       "type": "image/png"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "web"
+    },
+    {
+      "platform": "microsoft store",
+      "url": "https://www.microsoft.com/store/apps/9N1W26GDLBG9",
+      "id": "9N1W26GDLBG9"
     }
   ]
 }
