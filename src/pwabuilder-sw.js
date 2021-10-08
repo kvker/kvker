@@ -20,13 +20,15 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     Promise.all(
-      caches.keys().then((keys) =>
+      [caches.keys().then((keys) =>
         keys.map((key) => {
           if (key !== cacheName) {
             return caches.delete(key)
+          } else {
+            return Promise.resolve()
           }
         })
-      )
+      )]
     ).then(() => {
       self.clients.claim()
     })
@@ -36,6 +38,6 @@ self.addEventListener('activate', (e) => {
 // 请求接口事件，处理相关逻辑
 self.addEventListener('fetch', (e) => {
   // console.log(e.request.url)
-  if(e.request.url.match('lcapi')) return
+  if (e.request.url.match('lcapi')) return
   e.respondWith(caches.match(e.request).then((res) => res || fetch(e.request.url)))
 })
