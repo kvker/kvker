@@ -14,6 +14,8 @@ self.addEventListener('install', async (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.add(offlineFallbackPage)))
 })
 
+self.addEventListener('periodicsync', (event) => {})
+
 if (workbox.navigationPreload.isSupported()) {
   workbox.navigationPreload.enable()
 }
