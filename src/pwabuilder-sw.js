@@ -1,8 +1,8 @@
-const CACHE = 'kvker-1' // 决定是否更新本地资源，每次要更新记得替换
+const CACHE = 'kvker-1'
+const QUEUE_NAME = 'bgSyncQueue'
+const offlineFallbackPage = '404.html'
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js')
-
-const offlineFallbackPage = '404.html'
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
@@ -18,10 +18,15 @@ if (workbox.navigationPreload.isSupported()) {
   workbox.navigationPreload.enable()
 }
 
+const bgSyncPlugin = new workbox.backgroundSync.BackgroundSyncPlugin(QUEUE_NAME, {
+  maxRetentionTime: 24 * 60, // Retry for max of 24 Hours (specified in minutes)
+})
+
 workbox.routing.registerRoute(
   new RegExp('/*'),
   new workbox.strategies.StaleWhileRevalidate({
     cacheName: CACHE,
+    plugins: [bgSyncPlugin],
   })
 )
 
