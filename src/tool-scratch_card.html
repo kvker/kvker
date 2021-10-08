@@ -18,6 +18,11 @@
         margin: 0;
       }
     </style>
+    <script type="module">
+      import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate'
+      const el = document.createElement('pwa-update')
+      document.body.appendChild(el)
+    </script>
   </head>
   <body>
     <div class="container-fluid bg-light sticky-top">
@@ -102,7 +107,7 @@
 
     <script>
       if (navigator.serviceWorker) {
-        navigator.serviceWorker.register('sw.js')
+        navigator.serviceWorker.register('pwabuilder-sw.js')
         .then(function(registration) {
           console.log('Registered events at scope: ', registration.scope)
         })

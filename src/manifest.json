@@ -7,7 +7,7 @@
   "background_color": "white",
   "icons": [
     {
-      "src": "static/img/logo.png",
+      "src": "images/144x144.png",
       "sizes": "144x144",
       "type": "image/png"
     }
