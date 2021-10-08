@@ -5,6 +5,7 @@
     <title>kvker个人站</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="kvker个人的聚合搜索网站, 搜罗多多的网站" />
+    <link rel="manifest" href="manifest.json" />
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="static/css/custom.css">
@@ -53,6 +54,14 @@
 <footer id="footer" style="position: fixed; bottom: 0; right: 0; display: none;"><a style="color: #333" href="http://www.beian.miit.gov.cn" target="_blank">浙ICP备19013783号-1</a></footer>
 
 <script defer src="static/js/index.js"></script>
+    <script>
+      if (navigator.serviceWorker) {
+        navigator.serviceWorker.register('sw.js')
+        .then(function(registration) {
+          console.log('Registered events at scope: ', registration.scope)
+        })
+      }
+    </script>
     
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>

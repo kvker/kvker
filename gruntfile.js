@@ -53,16 +53,10 @@ module.exports = function (grunt) {
     copy: {
       build: {
         expand: true,
-        cwd: 'src/static',
-        src: 'libs/**/*',
-        dest: 'dist/static/',
-      },
-      favicon: {
-        expand: true,
         cwd: 'src',
-        src: 'favicon.ico',
+        src: ['static/libs/**/*', 'static/img/**/*', 'favicon.ico', 'manifest.json', 'sw.js'],
         dest: 'dist/',
-      },
+      }
     },
     htmlmin: {
       options: {

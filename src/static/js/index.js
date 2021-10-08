@@ -22,7 +22,7 @@
    * 获取列表
    */
   function getList() {
-    let local_list = JSON.parse(localStorage.getItem(ART_LIST))
+    let local_list = JSON.parse(localStorage.getItem(ART_LIST) || null)
     if (local_list) {
       card_list = local_list
       renderCardList(card_list)
@@ -40,7 +40,7 @@
       card_list = ret
       localStorage.setItem(ART_LIST, JSON.stringify(card_list))
       renderCardList(card_list)
-    })
+    }).catch(alert)
   }
 
   function getCardList() {
@@ -51,16 +51,7 @@
         q.select(['title', 'summary', 'content'])
         q.limit(1000)
       })
-      .then((ret) => {
-        if (ret) {
-          unloading()
-          return ret.map((i) => i.toJSON())
-        }
-      })
-      .catch((error) => {
-        console.error(error)
-        return []
-      })
+      .then((ret) => ret.map((i) => i.toJSON()))
       .finally(unloading)
   }
 
