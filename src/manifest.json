@@ -1,6 +1,6 @@
 {
-  "name": "kvker",
-  "short_name": "大前端笔记",
+  "name": "大前端笔记",
+  "short_name": "大前端随笔",
   "display": "standalone",
   "start_url": "index.html",
   "theme_color": "white",
