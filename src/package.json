@@ -1,9 +1,0 @@
-{
-  "name": "website",
-  "version": "1.0.0",
-  "description": "kvker个人笔记站",
-  "main": "main.js",
-  "scripts": {
-    "electron": "electron ."
-  }
-}
