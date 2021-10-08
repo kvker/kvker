@@ -54,7 +54,7 @@ module.exports = function (grunt) {
       build: {
         expand: true,
         cwd: 'src',
-        src: ['static/libs/**/*', 'static/img/**/*', 'images/**/*', 'favicon.ico', 'manifest.json', 'pwabuilder-sw.js'],
+        src: ['static/libs/**/*', 'static/img/**/*', 'images/**/*', 'favicon.ico', 'manifest.json', 'sw.js'],
         dest: 'dist/',
       }
     },
