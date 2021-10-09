@@ -1,7 +1,7 @@
 'use strict'
 
 !(function () {
-  if(!is_electron) {
+  if (!is_electron) {
     el.footer.style.display = 'block'
   }
 
@@ -22,13 +22,14 @@
    * 获取列表
    */
   function getList() {
-    let local_list = JSON.parse(localStorage.getItem(ART_LIST) || null)
-    if (local_list) {
-      card_list = local_list
-      renderCardList(card_list)
-    } else {
-      refresh()
-    }
+    localforage.getItem(ART_LIST).then(function (local_list) {
+      if (local_list) {
+        card_list = local_list
+        renderCardList(card_list)
+      } else {
+        refresh()
+      }
+    })
   }
 
   /**
@@ -36,11 +37,13 @@
    */
   function refresh() {
     cleanCardList()
-    getCardList().then((ret) => {
-      card_list = ret
-      localStorage.setItem(ART_LIST, JSON.stringify(card_list))
-      renderCardList(card_list)
-    }).catch(alert)
+    getCardList()
+      .then((ret) => {
+        card_list = ret
+        localforage.setItem(ART_LIST, card_list)
+        renderCardList(card_list)
+      })
+      .catch(alert)
   }
 
   function getCardList() {
@@ -119,12 +122,16 @@
   }
 
   function renderCardList(list) {
-    el.card_list.innerHTML = list.reduce((p, c) => (p += `
+    el.card_list.innerHTML = list.reduce(
+      (p, c) =>
+        (p += `
     <div class="card pb-2 pt-2 mb-2">
       <div class="card-body">
         <a class="text-info card-link" href="art-detail.html?id=${c.objectId}">${c.title}</a>
       </div>
     </div>
-    `), '')
+    `),
+      ''
+    )
   }
 })()
