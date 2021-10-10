@@ -1,8 +1,9 @@
 'use strict'
 
 !(function () {
-  if (!is_electron) {
+  if (!is_pwa) {
     el.footer.style.display = 'block'
+    el.tool.style.display = 'block'
   }
 
   const ART_LIST = 'art_list'

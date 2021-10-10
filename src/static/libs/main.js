@@ -24,10 +24,11 @@
   window.user = av.currentUser()
   window.userinfo = null
 
-  window.is_electron = navigator.userAgent.includes('Electron')
+  window.is_pwa = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone || document.referrer.includes('android-app://')
 
-  if(!is_electron) {
+  if (!is_pwa) {
     el.account.style.display = 'block'
+    el.tool.style.display = 'block'
   }
 
   window.searchParams = new URL(location.href).searchParams

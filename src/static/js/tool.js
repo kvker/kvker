@@ -34,7 +34,7 @@
     },
   ]
 
-  if (!is_electron) {
+  if (!is_pwa) {
     tools.push(
       {
         name: '打地鼠',
