@@ -3,12 +3,12 @@
 !(function () {
   if (!is_pwa) {
     el.footer.style.display = 'block'
-    el.tool.style.display = 'block'
+  } else {
+    resizeTo(400, 800)
   }
 
   const ART_LIST = 'art_list'
   let card_list = []
-  el.account.addEventListener('click', clickAccount)
   el.search_input.addEventListener('keypress', inputKeypress)
   el.search_btn.addEventListener('click', search)
   el.refresh_btn.addEventListener('click', refresh)
@@ -59,37 +59,11 @@
       .finally(unloading)
   }
 
-  function clickAccount() {
-    if (user) {
-      el.account.removeEventListener('click', clickAccount)
-      av.logout().then((_) => {
-        account.innerText = '账号'
-        user = av.currentUser()
-        userinfo = null
-        listenLogout()
-      })
-    } else {
-      let username = prompt('请输入你的唯一id')
-      if (!username) {
-        return
-      }
-      av.login(username, '123456')
-        .then((ret) => {
-          user = ret
-          userinfo = user.toJSON()
-          el.account.innerText = userinfo.username
-          listenLogin()
-          el.account.addEventListener('click', clickAccount)
-        })
-        .catch(alert)
-    }
-  }
-
-  function listenLogin() {
+  window.listenLogin = function () {
     el.add_btn.style.display = 'inline'
   }
 
-  function listenLogout() {
+  window.listenLogout = function () {
     el.add_btn.style.display = 'none'
     el.account.addEventListener('click', clickAccount)
   }

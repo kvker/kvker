@@ -33,7 +33,7 @@
       })
 
       el.title.innerText = item.get('title')
-      el.markdown.innerHTML = marked(markdown_string)
+      el.h3.insertAdjacentHTML('afterend', marked(markdown_string))
     })
     .catch((error) => {
       console.error(error)
@@ -41,11 +41,11 @@
     })
     .finally(unloading)
 
-  function listenLogin() {
+  window.listenLogin = function () {
     el.ctrls_box.style.display = 'block'
   }
 
-  function listenLogout() {
+  window.listenLogout = function () {
     el.ctrls_box.style.display = 'none'
   }
 

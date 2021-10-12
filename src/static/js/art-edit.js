@@ -25,11 +25,11 @@ if (id) {
     .finally(unloading)
 }
 
-function listenLogin() {
+window.listenLogin = function () {
   el.complete_btn.style.display = 'inline'
 }
 
-function listenLogout() {
+window.listenLogout = function () {
   el.complete_btn.style.display = 'none'
 }
 

@@ -6,7 +6,7 @@
     get: (target, key) => {
       if (key in target) return target[key]
       else {
-        if (key.match(/^\w/)) target[key] = $(`#${key}`)
+        if (key.match(/^\w/)) target[key] = $(`#${key}`) || $(`${key}`)
         else target[key] = $(key)
         return target[key]
       }
@@ -32,6 +32,33 @@
   }
 
   window.searchParams = new URL(location.href).searchParams
+
+  window.clickAccount = function () {
+    if (user) {
+      el.account.removeEventListener('click', clickAccount)
+      av.logout().then((_) => {
+        account.innerText = '账号'
+        user = av.currentUser()
+        userinfo = null
+        listenLogout()
+      })
+      el.account.addEventListener('click', clickAccount)
+    } else {
+      let username = prompt('请输入你的唯一id')
+      if (!username) {
+        return
+      }
+      av.login(username, '123456')
+        .then((ret) => {
+          user = ret
+          userinfo = user.toJSON()
+          el.account.innerText = userinfo.username
+          listenLogin()
+        })
+        .catch(alert)
+    }
+  }
+  el.account.addEventListener('click', clickAccount)
 
   if (user) {
     userinfo = user.toJSON()
