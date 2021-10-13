@@ -63,5 +63,6 @@
   if (user) {
     userinfo = user.toJSON()
     el.account.innerText = userinfo.username
+    el.account.style.display = 'block'
   }
 })()
