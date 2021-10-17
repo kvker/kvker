@@ -1,5 +1,5 @@
-const CACHE = 'kvker-8'
-const QUEUE_NAME = 'bgSyncQueue'
+const CACHE = 'kvker-9'
+const QUEUE_NAME = 'bg_sync_queue'
 const OFFLINE_FALLBACK_PAGE = '404.html'
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js')
@@ -21,7 +21,7 @@ if (workbox.navigationPreload.isSupported()) {
 }
 
 const bg_sync_plugin = new workbox.backgroundSync.BackgroundSyncPlugin(QUEUE_NAME, {
-  maxRetentionTime: 24 * 60, // Retry for max of 24 Hours (specified in minutes)
+  maxRetentionTime: 24 * 60,
 })
 
 workbox.routing.registerRoute(
@@ -45,12 +45,12 @@ self.addEventListener('fetch', (event) => {
             return p_res
           }
 
-          const networkResp = await fetch(event.request)
-          return networkResp
+          const network_res = await fetch(event.request)
+          return network_res
         } catch (error) {
           const cache = await caches.open(CACHE)
-          const c_res = await cache.match(OFFLINE_FALLBACK_PAGE)
-          return c_res
+          const cache_res = await cache.match(OFFLINE_FALLBACK_PAGE)
+          return cache_res
         }
       })()
     )

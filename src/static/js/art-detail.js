@@ -1,6 +1,7 @@
 'use strict'
 
 !(function () {
+  const ART_LIST = 'art_list'
   let renderer_MD = new marked.Renderer()
   marked.setOptions({
     renderer: renderer_MD,
@@ -19,27 +20,23 @@
   if (userinfo) {
     el.ctrls_box.style.display = 'block'
   }
-  loading()
-  av.read('Note', (q) => {
-    q.equalTo('objectId', id)
-  })
-    .then((ret) => {
-      let item = ret[0]
-      let markdown_string = item.get('content')
+
+  localforage.getItem(ART_LIST).then(function (local_list) {
+    if (local_list) {
+      let item = local_list.find((i) => i.objectId === id)
+      let markdown_string = item.content
       marked.setOptions({
         highlight(code) {
           return hljs.highlightAuto(code).value
         },
       })
 
-      el.title.innerText = item.get('title')
+      el.title.innerText = item.title
       el.h3.insertAdjacentHTML('afterend', marked(markdown_string))
-    })
-    .catch((error) => {
-      console.error(error)
-      alert(error.message)
-    })
-    .finally(unloading)
+    } else {
+      alert('无文章，请重试')
+    }
+  })
 
   window.listenLogin = function () {
     el.ctrls_box.style.display = 'block'
