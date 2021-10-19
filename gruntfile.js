@@ -51,7 +51,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy')
 
   // 默认被执行的任务列表。
-  grunt.registerTask('default', ['uglify', 'cssmin', 'htmlmin', 'copy', 'ejsasync'])
+  grunt.registerTask('default', ['uglify', 'cssmin', 'htmlmin', 'copy'])
   grunt.registerTask('ejsasync', function () {
     let done = this.async()
     LCData().then(() => {
@@ -59,7 +59,7 @@ module.exports = function (grunt) {
       done()
     })
   })
-  // grunt.registerTask('run', ['ejsasync'])
+  grunt.registerTask('async', ['ejsasync'])
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     watch: {
