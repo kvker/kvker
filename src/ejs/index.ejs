@@ -1,18 +1,26 @@
 <%- include('common/header', {links: [`static/css/index.css`]}) %>
 
 <main class="container">
-  <div class="row position-sticky my-2" style="top: 48px; z-index: 1;">
+  <div class="row position-sticky my-2" style="top: 48px; z-index: 1">
     <input class="col-sm-4 col-6" id="search_input" placeholder="名称, 简述, 内容(没搜到则百度)" autofocus />
     <button class="col-2 col-sm-1 ml-sm-2 btn btn-primary" id="search_btn">搜索</button>
     <button class="col-2 col-sm-1 ml-sm-2 btn btn-info" id="refresh_btn">刷新</button>
     <button class="col-2 col-sm-1 ml-sm-2 btn btn-secondary" id="add_btn" style="display: none">新增</button>
   </div>
   <div class="d-flex flex-wrap justify-content-between" id="card_list"></div>
-  <button class="position-fixed bg-white rounded-circle" style="bottom: 120px; right: 20px; width: 40px; height: 40px;" onclick="javascript: document.documentElement.scrollTo(0, 0)">顶</button>
-  <button class="position-fixed bg-white rounded-circle" style="bottom: 40px; right: 20px; width: 40px; height: 40px;" onclick="javascript: document.documentElement.scrollTo(0, 1000000)">底</button>
+  <button class="position-fixed bg-white rounded-circle" style="bottom: 120px; right: 20px; width: 40px; height: 40px" onclick="javascript: document.documentElement.scrollTo(0, 0)">顶</button>
+  <button class="position-fixed bg-white rounded-circle" style="bottom: 40px; right: 20px; width: 40px; height: 40px" onclick="javascript: document.documentElement.scrollTo(0, 1000000)">底</button>
 </main>
 
-<footer id="footer" style="position: fixed; bottom: 0; right: 0; display: none;"><a style="color: #333" href="http://www.beian.miit.gov.cn" target="_blank">浙ICP备19013783号-1</a></footer>
+<% getNoteList().forEach((item) => { %>
+<div class="card pb-2 pt-2 mb-2">
+  <div class="card-body">
+    <a class="text-info card-link" href="`art-detail.html?id=${item.objectId}`">${item.title}</a>
+  </div>
+</div>
+<% }) %>
+
+<footer id="footer" style="position: fixed; bottom: 0; right: 0; display: none"><a style="color: #333" href="http://www.beian.miit.gov.cn" target="_blank">浙ICP备19013783号-1</a></footer>
 
 <script defer src="static/js/index.js"></script>
 <%- include('common/footer') %>
