@@ -1,3 +1,6 @@
+const env = process.env
+const is_pwa = env.npm_lifecycle_script.includes('--pwa')
+
 module.exports = function (grunt) {
   // 加载包含 "uglify" 任务的插件。
   grunt.loadNpmTasks('grunt-ejs')
@@ -19,6 +22,7 @@ module.exports = function (grunt) {
     ejs: {
       options: {
         banner: '/*! <%= pkg.description %> <%= pkg.author %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+        is_pwa,
       },
       build: {
         expand: true,
