@@ -14,7 +14,7 @@
   el.refresh_btn.addEventListener('click', refresh)
   el.add_btn.addEventListener('click', clickAddArticle)
 
-  // getList()
+  getList()
 
   if (user) {
     el.add_btn.style.display = 'inline'
