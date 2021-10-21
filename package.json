@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "anywhere -s -d src/ -p 18002",
     "watch": "grunt watch",
-    "build": "grunt async && grunt"
+    "build": "grunt"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",

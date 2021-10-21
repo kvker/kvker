@@ -51,20 +51,13 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy')
 
   // 默认被执行的任务列表。
-  grunt.registerTask('default', ['uglify', 'cssmin', 'htmlmin', 'copy'])
-  grunt.registerTask('ejsasync', function () {
-    let done = this.async()
-    LCData().then(() => {
-      grunt.task.run('ejs')
-      done()
-    })
-  })
-  grunt.registerTask('async', ['ejsasync'])
+  grunt.registerTask('default', ['uglify', 'ejs', 'cssmin', 'htmlmin', 'copy'])
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       files: ['src/ejs/**/*.ejs'],
-      tasks: ['ejs:build'],
+      tasks: ['ejs'],
     },
     ejs: {
       options: {
@@ -73,24 +66,11 @@ module.exports = function (grunt) {
       build: {
         expand: true,
         cwd: 'src/ejs',
-        src: ['**/*.ejs', '!common/**/*.ejs', '!index.ejs'],
-        dest: 'src/',
-        ext: '.html',
-      },
-      homepage: {
-        options: {
-          getNoteList: function() {
-            return lc_data.results
-          },
-        },
-        expand: true,
-        cwd: 'src/ejs',
-        src: ['index.ejs'],
+        src: ['**/*.ejs', '!common/**/*.ejs'],
         dest: 'src/',
         ext: '.html',
       },
     },
-
     uglify: {
       options: {
         banner: '/*! <%= pkg.description %> <%= pkg.author %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
