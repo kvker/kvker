@@ -28,7 +28,7 @@ module.exports = function (grunt) {
         expand: true,
         cwd: 'src/ejs',
         src: ['**/*.ejs', '!common/**/*.ejs'],
-        dest: 'temp/',
+        dest: 'src/',
         ext: '.html',
       },
     },
@@ -76,7 +76,7 @@ module.exports = function (grunt) {
       },
       build: {
         expand: true,
-        cwd: 'temp',
+        cwd: 'src',
         src: '**/*.html',
         dest: 'dist/',
       },

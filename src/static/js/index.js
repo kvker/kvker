@@ -4,9 +4,11 @@
   if (!is_pwa) {
     el.header.style.display = 'block'
     el.footer.style.display = 'block'
+    el.refresh_btn.style.display = 'block'
+    el.add_btn.style.display = 'block'
   } else {
     resizeTo(400, 800)
-    el.input_box.style.top = '0'
+    el.input_box.style.top = '.5rem'
   }
 
   const ART_LIST = 'art_list'
