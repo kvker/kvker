@@ -1,0 +1,25 @@
+html::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .card {
+    width: 30%;
+  }
+}
+
+.scroll-ctrl {
+  bottom: 120px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+}
+
+.scroll-ctrl:last-of-type {
+  bottom: 40px;
+}

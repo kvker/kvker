@@ -11,15 +11,3 @@ html::-webkit-scrollbar {
     width: 30%;
   }
 }
-
-.scroll-ctrl {
-  bottom: 120px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
-  border: 1px solid #ddd;
-}
-
-.scroll-ctrl:last-of-type {
-  bottom: 40px;
-}
