@@ -1,6 +1,10 @@
 'use strict'
 
 !(function () {
+  if (!is_pwa) {
+    el.header.style.display = 'block'
+  }
+
   const tools = [
     {
       name: '图片压缩',
