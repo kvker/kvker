@@ -7,9 +7,12 @@
     <meta name="description" content="kvker个人的聚合搜索网站, 搜罗多多的网站" />
     <link rel="manifest" href="manifest.json" />
     <link rel="shortcut icon" href="favicon.ico" />
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="static/css/custom.css">
-    
+    <link rel="stylesheet" href="static/css/pure-main.css">
+    <% if (typeof links !== 'undefined') { %>
+      <% links.forEach(function(link) { %>
+      <link rel="stylesheet" href="<%= link %>" />
+      <% }) %>
+    <% } %>
     <style>
       .container {
         padding: 0;
@@ -38,30 +41,3 @@
         </ul>
       </nav>
     </div>
-
-
-<main class="container d-flex">
-  <nav id="nav" class="d-flex flex-column" style="width: 120px;"></nav>
-  <iframe class="w-100 border-none" style="height: calc(100vh - 40px);" id="iframe" src="#"></iframe>
-</main>
-
-<script defer src="static/js/tool-bd_search.js"></script>
-
-    <script>
-      if (navigator.serviceWorker) {
-        navigator.serviceWorker.register('pwabuilder-sw.js')
-          .then(function(registration) {
-            console.log('Registered events at scope: ', registration.scope)
-          })
-      }
-    </script>
-    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
-    <script src="static/libs/localforage.min.js"></script>
-    <script src="static/libs/av.js"></script>
-    <script src="static/libs/main.js"></script>
-    
-  </body>
-</html>

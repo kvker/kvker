@@ -1,17 +1,17 @@
 'use strict'
 
 !(function () {
-  let canvas, ctx, input, gif
-  let result_url = ''
-  canvas = el.canvas
-  ctx = canvas.getContext('2d')
-  input = el.input
+  let canvas = el.canvas,
+    ctx = canvas.getContext('2d'),
+    result_url = '',
+    gif
 
   window.changeInput = (e) => {
     let file = e.target.files[0]
     if (!file) {
       return
     }
+    el.choose_btn.remove()
     let reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onload = (e) => {
@@ -33,7 +33,7 @@
 
       gif = new GIF({
         workers: 2,
-        quality: 30,
+        quality: 10,
         workerScript: 'static/libs/gif.worker.js',
       })
 
@@ -68,12 +68,13 @@
 
       // gif.js renderer完成
       gif.on('finished', (blob) => {
+        unloading()
         let file = new FileReader()
         file.readAsDataURL(blob)
         file.onload = () => {
           result_url = file.result
           el.result.src = file.result
-          el.input.style.display = 'none'
+          el.result.style.display = 'inline'
         }
       })
     }
@@ -84,16 +85,12 @@
       ctx.save()
       ctx.drawImage(img_obj_list[i], 0, 0, canvas.width, canvas.height)
       ctx.restore()
-      gif.addFrame(canvas, { copy: true, delay: 100 })
+      gif.addFrame(canvas, { copy: true, delay: 60 })
       ctx.clearRect(0, 0, canvas.width, canvas.height)
     }
 
-    let p = document.createElement('p')
-    p.innerText = '装载中，稍等...'
-    document.body.insertAdjacentElement('beforeend', p)
-    setTimeout(() => {
-      p.parentElement.removeChild(p)
-    }, 1000)
+    loading()
+
     gif.render()
   }
 

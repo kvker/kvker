@@ -1,0 +1,16 @@
+    <script>
+      if (navigator.serviceWorker) {
+        navigator.serviceWorker.register('pwabuilder-sw.js')
+          .then(function(registration) {
+            console.log('Registered events at scope: ', registration.scope)
+          })
+      }
+    </script>
+    <script src="static/libs/pure-main.js"></script>
+    <% if (typeof scripts !== 'undefined') { %>
+      <% scripts.forEach(function(script) { %>
+      <script src="<%= script %>"></script>
+      <% }) %>
+    <% } %>
+  </body>
+</html>
