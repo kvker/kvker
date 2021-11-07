@@ -60,7 +60,7 @@
   }
 
   window.listenLogin = function () {
-    el.add_btn.style.display = 'inline'
+    is_pwa || (el.add_btn.style.display = 'inline')
   }
 
   window.listenLogout = function () {
