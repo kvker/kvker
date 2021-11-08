@@ -17,7 +17,7 @@
   getList()
 
   if (user) {
-    el.add_btn.style.display = 'inline'
+    is_pwa || (el.add_btn.style.display = 'inline')
   }
   /**
    * 获取列表
