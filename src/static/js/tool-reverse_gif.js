@@ -85,7 +85,7 @@
       ctx.save()
       ctx.drawImage(img_obj_list[i], 0, 0, canvas.width, canvas.height)
       ctx.restore()
-      gif.addFrame(canvas, { copy: true, delay: 60 })
+      gif.addFrame(canvas, { copy: true, delay: 100 })
       ctx.clearRect(0, 0, canvas.width, canvas.height)
     }
 
