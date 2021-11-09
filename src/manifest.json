@@ -1,11 +1,11 @@
 {
-  "name": "大前端笔记",
-  "short_name": "大前端随笔",
+  "name": "gif反转工具",
+  "short_name": "gif反转",
   "display": "standalone",
-  "start_url": "index.html",
+  "start_url": "tool-reverse_gif.html.html",
   "theme_color": "white",
   "background_color": "white",
-  "description": "我的个人笔记集合",
+  "description": "一个简单易用的gif反转工具",
   "author": "杭州市滨江区乌斑兔软件设计工作室",
   "developer": "kvker",
   "lang": "zh-CN",
@@ -44,9 +44,9 @@
   ],
   "shortcuts": [
     {
-      "name": "笔记列表",
+      "name": "gif反转",
       "url": "/",
-      "description": "我的个人笔记集合",
+      "description": "gif反转工具",
       "icons": [
         {
           "src": "static/img/logo_96.png",
