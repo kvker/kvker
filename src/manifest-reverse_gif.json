@@ -1,0 +1,59 @@
+{
+  "name": "gif反转工具",
+  "short_name": "gif反转",
+  "display": "standalone",
+  "start_url": "tool-reverse_gif.html.html",
+  "theme_color": "white",
+  "background_color": "white",
+  "description": "一个简单易用的gif反转工具",
+  "author": "杭州市滨江区乌斑兔软件设计工作室",
+  "developer": "kvker",
+  "lang": "zh-CN",
+  "scope": "/",
+  "orientation": "portrait",
+  "iarc_rating_id": "0c8575a0-ea10-48cb-a633-b0e98565b655",
+  "categories": ["books"],
+  "dir": "auto",
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "microsoft store",
+      "url": "https://www.microsoft.com/store/apps/9N1W26GDLBG9",
+      "id": "9N1W26GDLBG9"
+    }
+  ],
+  "icons": [
+    {
+      "src": "static/img/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-056e20b6-00c4-4ef4-ba3e-48a87240c51f/acf38670-c83a-44cf-aafe-1e50449ed57f.png",
+      "sizes": "2560x1412",
+      "type": "image/png"
+    },
+    {
+      "src": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-056e20b6-00c4-4ef4-ba3e-48a87240c51f/8b795feb-ee68-4f14-a2d3-57ca187586fe.png",
+      "sizes": "2560x1412",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "gif反转",
+      "url": "/",
+      "description": "gif反转工具",
+      "icons": [
+        {
+          "src": "static/img/logo_96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}
