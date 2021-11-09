@@ -18,7 +18,7 @@
   el.edit_btn.addEventListener('click', () => (location.href = `art-edit.html?id=${id}`))
   el.delete_btn.addEventListener('click', clickDelete)
   if (userinfo) {
-    el.ctrls_box.style.display = 'block'
+    is_pwa || (el.ctrls_box.style.display = 'block')
   }
 
   localforage.getItem(ART_LIST).then(function (local_list) {
@@ -39,7 +39,7 @@
   })
 
   window.listenLogin = function () {
-    el.ctrls_box.style.display = 'block'
+    is_pwa || (el.ctrls_box.style.display = 'block')
   }
 
   window.listenLogout = function () {
