@@ -2,7 +2,7 @@
   "name": "gif反转工具",
   "short_name": "gif反转",
   "display": "standalone",
-  "start_url": "tool-reverse_gif.html.html",
+  "start_url": "tool-reverse_gif.html",
   "theme_color": "white",
   "background_color": "white",
   "description": "一个简单易用的gif反转工具",

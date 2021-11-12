@@ -1,11 +1,11 @@
 {
-  "name": "gif反转工具",
-  "short_name": "gif反转",
+  "name": "黑白隐藏图",
+  "short_name": "阴阳图",
   "display": "standalone",
-  "start_url": "tool-reverse_gif.html.html",
+  "start_url": "tool-cool_avatar.html",
   "theme_color": "white",
   "background_color": "white",
-  "description": "一个简单易用的gif反转工具",
+  "description": "一个简单易用的黑白隐藏图片工具",
   "author": "杭州市滨江区乌斑兔软件设计工作室",
   "developer": "kvker",
   "lang": "zh-CN",
@@ -44,9 +44,9 @@
   ],
   "shortcuts": [
     {
-      "name": "gif反转",
+      "name": "黑白隐藏图",
       "url": "/",
-      "description": "gif反转工具",
+      "description": "黑白隐藏图工具",
       "icons": [
         {
           "src": "static/img/logo_96.png",
