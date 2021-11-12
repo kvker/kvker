@@ -1,4 +1,4 @@
-const CACHE = 'kvker-1-0-8'
+const CACHE = 'kvker-1-0-9'
 const QUEUE_NAME = 'bg_sync_queue'
 const OFFLINE_FALLBACK_PAGE = '404.html'
 
