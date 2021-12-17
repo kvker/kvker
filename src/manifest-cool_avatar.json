@@ -1,11 +1,11 @@
 {
-  "name": "大前端笔记",
-  "short_name": "大前端随笔",
+  "name": "黑白隐藏图",
+  "short_name": "阴阳图",
   "display": "standalone",
-  "start_url": "index.html",
+  "start_url": "tool-cool_avatar.html",
   "theme_color": "white",
   "background_color": "white",
-  "description": "我的个人笔记集合",
+  "description": "一个简单易用的黑白隐藏图片工具",
   "author": "杭州市滨江区乌斑兔软件设计工作室",
   "developer": "kvker",
   "lang": "zh-CN",
@@ -44,9 +44,9 @@
   ],
   "shortcuts": [
     {
-      "name": "笔记列表",
+      "name": "黑白隐藏图",
       "url": "/",
-      "description": "我的个人笔记集合",
+      "description": "黑白隐藏图工具",
       "icons": [
         {
           "src": "static/img/logo_96.png",
