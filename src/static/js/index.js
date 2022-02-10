@@ -59,14 +59,14 @@
       .finally(unloading)
   }
 
-  window.listenLogin = function () {
+  document.addEventListener('login', ret => {
     is_pwa || (el.add_btn.style.display = 'inline')
-  }
+  })
 
-  window.listenLogout = function () {
+  document.addEventListener('logout', () => {
     el.add_btn.style.display = 'none'
     el.account.addEventListener('click', clickAccount)
-  }
+  })
 
   function clickAddArticle() {
     location.href = `art-edit.html`

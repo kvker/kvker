@@ -43,7 +43,7 @@
         account.innerText = '账号'
         user = av.currentUser()
         userinfo = null
-        listenLogout()
+        document.dispatchEvent(new Event('logout'))
       })
       el.account.addEventListener('click', clickAccount)
     } else {
@@ -56,7 +56,7 @@
           user = ret
           userinfo = user.toJSON()
           el.account.innerText = userinfo.username
-          listenLogin()
+          document.dispatchEvent(new Event('login'))
         })
         .catch(alert)
     }

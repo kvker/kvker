@@ -23,13 +23,13 @@
     })
   }
 
-  window.listenLogin = function () {
+  document.addEventListener('login', (ret) => {
     el.complete_btn.style.display = 'inline'
-  }
+  })
 
-  window.listenLogout = function () {
+  document.addEventListener('logout', () => {
     el.complete_btn.style.display = 'none'
-  }
+  })
 
   function clickComplete() {
     document.body.style.opacity = 0.5

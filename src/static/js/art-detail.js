@@ -38,13 +38,13 @@
     }
   })
 
-  window.listenLogin = function () {
+  document.addEventListener('login', () => {
     is_pwa || (el.ctrls_box.style.display = 'block')
-  }
+  })
 
-  window.listenLogout = function () {
+  document.addEventListener('logout', () => {
     el.ctrls_box.style.display = 'none'
-  }
+  })
 
   function clickDelete() {
     if (confirm('确定删除吗?') && user) {
