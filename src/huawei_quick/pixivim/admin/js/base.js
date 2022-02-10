@@ -66,9 +66,6 @@ class Base extends KK {
         })
         this.user = av.currentUser()
         this.userinfo = null
-        if(this.listenLogout) {
-          this.listenLogout()
-        }
       })
     } else {
       let username = prompt('请输入你的唯一id')
@@ -81,9 +78,6 @@ class Base extends KK {
         this.update({
           account: this.userinfo.username,
         })
-        if(this.listenLogin) {
-          this.listenLogin()
-        }
         this.el.account.addEventListener('click', this.clickAccount)
       }).catch(alert)
     }
