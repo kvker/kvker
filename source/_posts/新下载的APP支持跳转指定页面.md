@@ -1,0 +1,18 @@
+---
+layout: note
+title: 新下载的APP支持跳转指定页面
+excerpt: Read more...
+date: 2022-5-29 14:17:11
+updated: 2022-5-29 14:17:11
+comments: false
+lang: zh-CN
+---
+
+[建议使用第三方](https://www.openinstall.io/)
+
+如果要自己整，参考下URL：
+
+`https://a.app.qq.com/o/simple.jsp?pkgname=com.showstartfans.activity&android_schema=mlink%3A%2F%2Fcom.showstartfans.activity%3Fparams%3D7CPBKPFAXgz1AiKc%252FUPf5P4MQtshqSKnpHnj7jvY2JduUUA8eL0X1%252FWJcZGf2CLhajmM7%252FgE2YwR%252FYkeZ%252FIXII11eQesDzLCb7bLfGpoFm8vFh8O6i4IKbcZilQowel0ZBvtxFX6gG5mqgDqIGioOr1Bcks8Sp0Sr9RCsdNGQDfKeYotLrBwVd87s9D6Yfl2%252BUPYftbFAu60%252FpwRDX1M%252BwjBv8iFEgGVnwQLnsB2l%252BwBkSH0m0%252FvJe8t6UquCVmzfEeU7V76u3IWggZdCYxQbhKzlyf5KZAa68jGUHbhqkjbVGLHiiwq0bBV0supHB8oLbU4aalnKu2XmNfgSIVMIuQ2ztBnfhlrTZpZSOqpRU7lErawoVcUn70vddrCwKRCJsf26m0GAfHulEKPx2eaM8%252BaXSTqu%252B4PrLfArlAl3ViLUvXFLKdQVM7UH52mSb1lzG2bDdM2gGIXSpMAVSrX1QBcZS5u74n%252B7x6YmQCwyTCnzqjn1C9p4hM3%252B%252B7ak8TdDXK1cIRdC%252Bwp4Tba5onpLqzIzbwnPzbQjVQfPr0JmHU4ievxN5upgfhgl95RBNPu5bMJrhPYJIx0uJhlXS%252Fy3ks%252BkvjBpdV7afDech9KGL2crYPlN1uEO%252FR5V2tGAbTei%252BgdD041bDmC6oal1Bn5UbgYPsnw2qYb%252BuH%252BDH6vvE6TTAfiFkkpPbWWeVJ8smh3%252F27mARbMmODZS3BmodFJAg%253D%253D/6661707305354588160`
+
+`https://4v0q.t4m.cn/open.html?mobid=2664096436415533056&mobDownload=https://itunes.apple.com/cn/app/id923912459?mt=8&scheme=ssdk12de8ed9d7f0eopenapp?params=HcyWxI9VRAyc//SCu+Q+fRfutyie0VOI1XczeM2nZTpZWJAGXAfaw9nRKmYk6igiane9av/rP0ohoMcr9P2OyFlxFLIx2pwR2LPjC2tQOnuj7Izwrxo+r9qtftICza1r7x6Sp6+DrJns2X74mwCQqzEb7U8P8AkzOOStmAsvdqg5KxeKJyhoxpgTNGmqAMRo&data=e30=`
+  

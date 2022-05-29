@@ -1,0 +1,6 @@
+.articles .article-entry,
+.articles .article-footer {
+  margin-top: 0;
+  max-height: 200px;
+  overflow: hidden;
+}
