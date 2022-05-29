@@ -1,0 +1,35 @@
+<%- include('common/pure-header') %>
+
+<style>
+  input {
+    border: none;
+    height: 26px;
+  }
+  label {
+    margin: 10px 0;
+  }
+</style>
+
+<main class="flex-c aic">
+  <h3>请上传正方形的图</h3>
+  <h6>主图->副图->合并->切换看效果->下载</h6>
+  <label class="flex aic">
+    主图
+    <input type="file" onchange="changeInput(event, 0)" accept="image/*" />
+  </label>
+  <label class="flex aic">
+    副图（不可见）
+    <input type="file" onchange="changeInput(event, 1)" accept="image/*" />
+  </label>
+  <br />
+  <button onclick="doMergeImage()">合并</button>
+  <br />
+  <canvas id="canvas"></canvas>
+  <br />
+  <button id="switch_btn" style="display: none" onclick="switchBG()">切换</button>
+  <button id="download_btn" style="display: none;margin-top: 10px;" onclick="download()">下载</button>
+</main>
+
+<script defer src="static/js/tool-cool_avatar.js"></script>
+
+<%- include('common/footer') %>

@@ -9,9 +9,7 @@
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="static/css/custom.css" />
-     
-    <link rel="stylesheet" href="static/css/tool.css" />
-     
+    
     <style>
       .container {
         padding: 0;
@@ -44,9 +42,18 @@
 </html>
 
 
-<main class="container d-flex flex-wrap justify-content-between" id="list"></main>
+<main class="container">
+  <div class="flex-c jcc aic">
+    <input id="input" type="file" onchange="changeInput(event)" accept="image/*" />
+    <a id="download" style="display: none; margin-top: var(--main_gap)" href="#" download>
+      <p>点击图片下载</p>
+      <img id="img" class="preview" src="#" alt="img" />
+    </a>
+  </div>
+</main>
 
-<script defer src="static/js/tool.js"></script>
+<script defer src="static/js/tool-compress_img.js"></script>
+
     <script>
       if (navigator.serviceWorker) {
         navigator.serviceWorker.register('pwabuilder-sw.js')

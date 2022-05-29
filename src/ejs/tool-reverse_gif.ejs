@@ -1,0 +1,9 @@
+<%- include('common/pure-header', {title: 'gif反转工具'}) %>
+
+<input id="input" class="none" type="file" onchange="changeInput(event)" accept="image/gif" />
+<img id="img" class="w-100 none" alt="img" rel:auto_play="1" rel:rubbable="1" />
+<canvas id="canvas" style="position: absolute; left: -10000px"></canvas>
+<img id="result" class="w-100 none f1 of-contain" src="#" alt="请选gif" onclick="javascript: el.input.click()" />
+<div id="choose_btn" class="w-100 h-100 flex jcc aic" onclick="javascript: el.input.click()">点击选择gif</div>
+
+<%- include('common/pure-footer', { scripts: [ 'https://file.kvker.com/40f8661ba4beedf0af2e/gif.js', 'https://file.kvker.com/59749c31f141f688a9f4/libgif.js', 'static/js/tool-reverse_gif.js', ] }) %>

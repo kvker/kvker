@@ -5,39 +5,75 @@
     <title>kvker个人站</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="kvker个人的聚合搜索网站, 搜罗多多的网站" />
+    <link rel="manifest" href="manifest.json" />
     <link rel="shortcut icon" href="favicon.ico" />
-    <link rel="stylesheet" href="/static/css/custom.css" />
-    
-    <link rel="stylesheet" href="/static/css/index.css" />
-    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="static/css/custom.css" />
+     
+    <link rel="stylesheet" href="static/css/index.css" />
+     
+    <style>
+      .container {
+        padding: 0;
+      }
+      .row {
+        margin: 0;
+      }
+    </style>
+    <script type="module">
+      import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate'
+      const el = document.createElement('pwa-update')
+      document.body.appendChild(el)
+    </script>
   </head>
   <body>
-    <nav class="flex jcsb top-nav">
-      <div class="nav-side"></div>
-      <div class="flex jcc aic">
-        <a class="nav-item" href="/">首页</a>
-        <a class="nav-item" href="/tool.html">工具</a>
-      </div>
-      <div id="account" class="nav-side">账号</div>
-    </nav>
+    <div id="header" class="container-fluid bg-light sticky-top" style="display: none">
+      <nav class="container navbar navbar-expand navbar-light">
+        <ul class="navbar-nav justify-content-between w-100">
+          <li class="nav-item d-flex">
+            <a class="nav-link" href="index.html">首页</a>
+            <a id="tool" class="nav-link" style="display: none" href="tool.html">工具</a>
+          </li>
+          <li class="nav-item">
+            <a id="account" class="nav-link" style="display: none" href="#">账号</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </body>
+</html>
 
 
-<main class="relative">
-  <div style="position: sticky; top: 47px;">
-    <input id="search_input" placeholder="名称, 简述, 内容(没搜到则百度)" autofocus="" />
-    <button class="mr-10" id="search_btn">搜索</button>
-    <button class="mr-10" id="refresh_btn">刷新</button>
-    <button class="mr-10" id="add_btn" style="display: none">新增</button>
+<main class="container">
+  <div id="input_box" class="row position-sticky my-2" style="top: 48px; z-index: 1">
+    <input class="col-4 col-sm-4 ml-2" id="search_input" placeholder="搜索" autofocus />
+    <button class="col-2 col-sm-1 ml-2 btn btn-primary" id="search_btn">搜索</button>
+    <button class="col-2 col-sm-1 ml-2 btn btn-info" id="refresh_btn">刷新</button>
+    <button class="col-2 col-sm-1 ml-2 btn btn-secondary" id="add_btn" style="display: none">新增</button>
   </div>
-  <div class="flex flex-wrap jcsb" id="card_list"></div>
-  <button class="scroll-button" onclick="javascript: document.documentElement.scrollTo(0, 0)">顶</button>
-  <button class="scroll-button bottom" onclick="javascript: document.documentElement.scrollTo(0, 1000000)">底</button>
+  <div class="d-flex flex-wrap justify-content-between mx-2" id="card_list"></div>
+  <button class="position-fixed bg-white rounded-circle" style="bottom: 120px; right: 20px; width: 40px; height: 40px" onclick="javascript: document.documentElement.scrollTo(0, 0)">顶</button>
+  <button class="position-fixed bg-white rounded-circle" style="bottom: 40px; right: 20px; width: 40px; height: 40px" onclick="javascript: document.documentElement.scrollTo(0, 1000000)">底</button>
 </main>
-<footer style="position: fixed; bottom: 0; right: 0"><a style="color: #333" href="http://www.beian.miit.gov.cn" target="_blank">浙ICP备19013783号-1</a></footer>
 
-<script defer src="/static/js/index.js"></script>
+<footer id="footer" style="position: fixed; bottom: 0; right: 0; display: none"><a style="color: #333" href="http://www.beian.miit.gov.cn" target="_blank">浙ICP备19013783号-1</a></footer>
+
+<script defer src="static/js/index.js"></script>
+    <script>
+      if (navigator.serviceWorker) {
+        navigator.serviceWorker.register('pwabuilder-sw.js')
+          .then(function(registration) {
+            console.log('Registered events at scope: ', registration.scope)
+          })
+      }
+    </script>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.2.0/dist/av-min.js"></script>
-    <script src="/static/js/av.js"></script>
-    <script src="/static/js/main.js"></script>
+    <script src="static/libs/localforage.min.js"></script>
+    <script src="static/libs/av.js"></script>
+    <script src="static/libs/main.js"></script>
+    
   </body>
 </html>

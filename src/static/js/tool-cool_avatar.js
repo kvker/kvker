@@ -17,6 +17,10 @@
     img.onload = () => {
       let width = img.width
       let height = img.height
+      if (width !== height) {
+        alert('请上传正方形图片')
+        return
+      }
       size = Math.min(width, height)
       canvas.width = size
       canvas.height = size
@@ -74,6 +78,7 @@
     // console.log(db)
     ctx.putImageData(imageDataBlack, 0, 0)
     el.switch_btn.style.display = 'inline'
+    el.download_btn.style.display = 'inline'
   }
 
   window.switchBG = () => {
@@ -82,5 +87,12 @@
     } else {
       el.canvas.style.backgroundColor = 'black'
     }
+  }
+
+  window.download = () => {
+    let a = document.createElement('a')
+    a.href = canvas.toDataURL('image/png')
+    a.download = 'cool_avatar.png'
+    a.click()
   }
 })()

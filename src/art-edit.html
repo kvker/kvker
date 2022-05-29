@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="static/css/custom.css" />
      
-    <link rel="stylesheet" href="static/css/tool.css" />
+    <link rel="stylesheet" href="/static/css/art-edit.css" />
      
     <style>
       .container {
@@ -44,9 +44,14 @@
 </html>
 
 
-<main class="container d-flex flex-wrap justify-content-between" id="list"></main>
+<main class="container d-flex flex-column align-items-center">
+  <input id="title" class="w-100 mt-4" placeholder="标题">
+  <textarea id="content" class="w-100 my-4" style="height: 60vh;resize: none;" placeholder="正文: markdown语法" ondrop="dropTextarea(event)"
+    onkeydown="keydownTextarea(event)" onpaste="pasteTextarea(event)"></textarea>
+  <button id="complete_btn" class="btn btn-primary w-25" style="padding: 4px 8px;">完成</button>
+</main>
 
-<script defer src="static/js/tool.js"></script>
+<script defer src="static/js/art-edit.js"></script>
     <script>
       if (navigator.serviceWorker) {
         navigator.serviceWorker.register('pwabuilder-sw.js')

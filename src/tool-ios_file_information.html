@@ -9,9 +9,7 @@
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="static/css/custom.css" />
-     
-    <link rel="stylesheet" href="static/css/tool.css" />
-     
+    
     <style>
       .container {
         padding: 0;
@@ -44,9 +42,25 @@
 </html>
 
 
-<main class="container d-flex flex-wrap justify-content-between" id="list"></main>
+<main class="container">
+  <input type="file" />
+  <pre></pre>
+</main>
 
-<script defer src="static/js/tool.js"></script>
+<script>
+  const input = document.querySelector('input')
+  const pre = document.querySelector('pre')
+  input.addEventListener('change', (e) => {
+    const file = e.target.files[0]
+    console.log(file)
+    pre.innerText = `
+      type: ${file.type}
+      size: ${file.size / 1024 / 1024 > 1 ? (file.size / 1024 / 1024).toFixed(2) + 'M' : (file.size / 1024).toFixed(2) + 'K'}
+      modi: ${new Date(file.lastModified).toLocaleString()}
+    `
+  })
+</script>
+
     <script>
       if (navigator.serviceWorker) {
         navigator.serviceWorker.register('pwabuilder-sw.js')

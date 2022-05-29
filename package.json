@@ -2,10 +2,13 @@
   "name": "website",
   "version": "1.0.0",
   "description": "kvker个人笔记站",
+  "author": "kvker",
   "scripts": {
-    "dev": "anywhere -s -d src/ -p 18002",
+    "dev": "concurrently 'npm:start' 'npm:watch'",
+    "start": "anywhere -s -d src/ -p 18002",
     "watch": "grunt watch",
-    "build": "grunt"
+    "update": "node update.js",
+    "build": "npm run update && grunt"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
@@ -13,6 +16,7 @@
     "@babel/plugin-transform-spread": "^7.13.0",
     "@babel/preset-env": "^7.14.1",
     "anywhere": "^1.5.0",
+    "concurrently": "^7.0.0",
     "grunt": "^1.4.0",
     "grunt-cli": "^1.4.2",
     "grunt-contrib-copy": "^1.0.0",

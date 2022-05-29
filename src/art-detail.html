@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="static/css/custom.css" />
      
-    <link rel="stylesheet" href="static/css/tool.css" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/default.min.css" />
+    
+    <link rel="stylesheet" href="static/css/art-detail.css" />
      
     <style>
       .container {
@@ -44,9 +46,15 @@
 </html>
 
 
-<main class="container d-flex flex-wrap justify-content-between" id="list"></main>
+<main class="container flex-column aic">
+  <h3 id="title" class="my-4"></h3>
+  <div id="ctrls_box" style="display: none;">
+    <button id="edit_btn" class="btn btn-primary" style="padding: 4px 8px;">编辑</button>
+    <button id="delete_btn" class="btn btn-warning" style="padding: 4px 8px;">删除</button>
+  </div>
+</main>
 
-<script defer src="static/js/tool.js"></script>
+<script defer src="static/js/art-detail.js"></script>
     <script>
       if (navigator.serviceWorker) {
         navigator.serviceWorker.register('pwabuilder-sw.js')
@@ -62,6 +70,12 @@
     <script src="static/libs/localforage.min.js"></script>
     <script src="static/libs/av.js"></script>
     <script src="static/libs/main.js"></script>
+    
+      
+      <script src="https://cdn.staticfile.org/marked/1.20/marked.min.js"></script>
+      
+      <script src="https://cdn.staticfile.org/highlight.js/10.1.2/highlight.min.js"></script>
+      
     
   </body>
 </html>

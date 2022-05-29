@@ -8,10 +8,12 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="static/css/custom.css" />
-     
-    <link rel="stylesheet" href="static/css/tool.css" />
-     
+    <link rel="stylesheet" href="static/css/custom.css">
+    
+      
+      <link rel="stylesheet" href="static/css/bfe_notes.css" />
+      
+    
     <style>
       .container {
         padding: 0;
@@ -27,26 +29,35 @@
     </script>
   </head>
   <body>
-    <div id="header" class="container-fluid bg-light sticky-top" style="display: none">
+    <div id="header" class="container-fluid bg-light sticky-top" style="display: none;">
       <nav class="container navbar navbar-expand navbar-light">
         <ul class="navbar-nav justify-content-between w-100">
           <li class="nav-item d-flex">
             <a class="nav-link" href="index.html">首页</a>
-            <a id="tool" class="nav-link" style="display: none" href="tool.html">工具</a>
+            <a id="tool" class="nav-link" style="display: none;" href="tool.html">工具</a>
           </li>
           <li class="nav-item">
-            <a id="account" class="nav-link" style="display: none" href="#">账号</a>
+            <a id="account" class="nav-link" style="display: none;" href="#">账号</a>
           </li>
         </ul>
       </nav>
     </div>
-  </body>
-</html>
 
 
-<main class="container d-flex flex-wrap justify-content-between" id="list"></main>
+<main class="container">
+  <div id="input_box" class="row position-sticky my-2" style="top: 48px; z-index: 1">
+    <input class="col-sm-4 col-6 ml-2" id="search_input" placeholder="名称, 简述, 内容" autofocus />
+    <button class="col-2 col-sm-1 ml-sm-2 btn btn-primary" id="search_btn">搜索</button>
+    <button class="col-2 col-sm-1 ml-sm-2 btn btn-info" id="refresh_btn">刷新</button>
+  </div>
+  <div class="d-flex flex-wrap justify-content-between mx-2" id="card_list"></div>
+  <button class="position-fixed bg-white rounded-circle" style="bottom: 120px; right: 20px; width: 40px; height: 40px" onclick="javascript: document.documentElement.scrollTo(0, 0)">顶</button>
+  <button class="position-fixed bg-white rounded-circle" style="bottom: 40px; right: 20px; width: 40px; height: 40px" onclick="javascript: document.documentElement.scrollTo(0, 1000000)">底</button>
+</main>
 
-<script defer src="static/js/tool.js"></script>
+<footer id="footer" style="position: fixed; bottom: 0; right: 0; display: none"><a style="color: #333" href="http://www.beian.miit.gov.cn" target="_blank">浙ICP备19013783号-1</a></footer>
+
+<script defer src="static/js/bfe_notes.js"></script>
     <script>
       if (navigator.serviceWorker) {
         navigator.serviceWorker.register('pwabuilder-sw.js')
@@ -55,6 +66,7 @@
           })
       }
     </script>
+    
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -62,6 +74,5 @@
     <script src="static/libs/localforage.min.js"></script>
     <script src="static/libs/av.js"></script>
     <script src="static/libs/main.js"></script>
-    
   </body>
 </html>

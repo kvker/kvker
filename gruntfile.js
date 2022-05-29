@@ -1,3 +1,6 @@
+const env = process.env
+const is_pwa = env.npm_lifecycle_script.includes('--pwa')
+
 module.exports = function (grunt) {
   // 加载包含 "uglify" 任务的插件。
   grunt.loadNpmTasks('grunt-ejs')
@@ -8,17 +11,18 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy')
 
   // 默认被执行的任务列表。
-  grunt.registerTask('default', ['ejs', 'uglify', 'cssmin', 'htmlmin', 'copy'])
+  grunt.registerTask('default', ['uglify', 'ejs', 'cssmin', 'htmlmin', 'copy'])
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       files: ['src/ejs/**/*.ejs'],
-      tasks: ['ejs:build'],
+      tasks: ['ejs'],
     },
     ejs: {
       options: {
         banner: '/*! <%= pkg.description %> <%= pkg.author %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+        is_pwa,
       },
       build: {
         expand: true,
@@ -53,14 +57,8 @@ module.exports = function (grunt) {
     copy: {
       build: {
         expand: true,
-        cwd: 'src/static',
-        src: 'libs/**/*',
-        dest: 'dist/static/',
-      },
-      favicon: {
-        expand: true,
         cwd: 'src',
-        src: 'favicon.ico',
+        src: ['static/libs/**/*', 'static/img/**/*', 'images/**/*', 'favicon.ico', 'manifest.json', 'pwabuilder-sw.js'],
         dest: 'dist/',
       },
     },

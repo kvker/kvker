@@ -1,69 +1,13 @@
-html {
-  scroll-behavior: smooth;
+html::-webkit-scrollbar {
+  display: none;
 }
 
-main {
-  padding: var(--main_gap) 20px;
-}
-#search_input {
+.card {
   width: 100%;
-  max-width: 375px;
-  height: 32px;
-}
-@media screen and (max-width: 480px) {
-  #search_input {
-    margin-bottom: 10px;
-  }
-}
-#search_btn,
-#refresh_btn,
-#add_btn {
-  height: 32px;
-  padding: 0 var(--main_gap);
-}
-.link {
-  width: 30%;
-  font-size: 18px;
-  margin: var(--main_gap) 0;
-  color: #333;
-  padding: var(--main_gap);
-  text-decoration: none;
-  border-bottom: var(--main_line);
-}
-@media screen and (max-width: 968px) {
-  .link {
-    width: 100%;
-  }
-}
-@media (prefers-color-scheme: dark) {
-  #search_btn,
-  #search_input,
-  #refresh_btn,
-  #add_btn {
-    color: #fff;
-  }
-  .link {
-    background-color: #333;
-    color: #fff;
-  }
-  #search_input {
-    color: #333;
-  }
 }
 
-button {
-  background-color: white;
-}
-
-.scroll-button {
-  position: fixed;
-  right: 20px;
-  bottom: 140px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-
-.scroll-button.bottom {
-  bottom: 80px;
+@media (min-width: 1024px) {
+  .card {
+    width: 30%;
+  }
 }
